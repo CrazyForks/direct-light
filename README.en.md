@@ -55,7 +55,7 @@ Besides the web version, Direct Light can be packaged as a macOS desktop app via
   npm run tauri build   # outputs .app / .dmg to src-tauri/target/release/bundle/
   ```
 
-- **Releasing**: push a `v*` tag (`git tag v0.7.0 && git push origin v0.7.0`); GitHub Actions builds the universal app on a macOS runner and attaches it to a Release (draft by default).
+- **Releasing**: push a `v*` tag (`git tag v0.7.2 && git push origin v0.7.2`); GitHub Actions builds the universal app on a macOS runner and attaches it to a Release (draft by default).
 
 ## Tech stack
 

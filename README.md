@@ -55,7 +55,7 @@ npm run preview    # 预览构建产物
   npm run tauri build   # 产出 .app / .dmg 到 src-tauri/target/release/bundle/
   ```
 
-- **发版**：push 一个 `v*` tag（如 `git tag v0.7.0 && git push origin v0.7.0`），GitHub Actions 会在 macOS runner 上构建通用包并挂到 Releases（默认草稿，确认后发布）。
+- **发版**：push 一个 `v*` tag（如 `git tag v0.7.2 && git push origin v0.7.2`），GitHub Actions 会在 macOS runner 上构建通用包并挂到 Releases（默认草稿，确认后发布）。
 
 ## 技术栈
 
