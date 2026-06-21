@@ -1,16 +1,27 @@
 # Direct Light · White-Studio Lighting Previz
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Live demo](https://img.shields.io/badge/live%20demo-online-brightgreen.svg)](https://oukeming64-tech.github.io/direct-light/)
+[![Latest release](https://img.shields.io/github/v/release/oukeming64-tech/direct-light)](https://github.com/oukeming64-tech/direct-light/releases)
+[![Desktop: Tauri 2](https://img.shields.io/badge/desktop-Tauri%202-24c8db.svg)](https://tauri.app/)
+
 > A lightweight lighting-previsualization sandbox for directors, DPs, and gaffers. Inside a standard white studio, preview in real time how actor blocking, light position, fixtures, modifiers, and white/colored light shape your subject and shadows.
 >
 > 中文文档（主文档）: [`README.md`](README.md)
 
 **🔗 Live demo: https://oukeming64-tech.github.io/direct-light/** — no install, works on mobile too, auto-updated on every push to `main`.
 
-A frontend-only web app, no backend. It optimizes for **communication, real-time feedback, and readability** — not physically accurate rendering.
+A frontend-only web app, no backend. It optimizes for **communication, real-time feedback, and readability** — not physically accurate rendering. Unlike heavyweight DCC suites or paid set-lighting software, it's instant, install-free, and built for talking through a lighting setup with your crew.
 
 ![Direct Light demo: adjust the camera position, then switch to the through-lens view and watch the framing and lighting update live](docs/media/hero.gif)
 
 > *Adjust the camera position → switch to the "lens" view and the camera's actual frame updates in real time. [Live demo](https://oukeming64-tech.github.io/direct-light/) ｜ [Desktop download](https://github.com/oukeming64-tech/direct-light/releases)*
+
+## Screenshots
+
+| Lower the key → the ground shadow stretches | Colored light tints the whole white studio | Switch to the camera's lens view |
+| :---: | :---: | :---: |
+| ![Long ground shadow from a low light](docs/media/shot-shadow.png) | ![Green colored light and a softbox tinting the studio](docs/media/shot-color.png) | ![Through-the-lens camera framing of the subject](docs/media/shot-lens.png) |
 
 ## Features
 
