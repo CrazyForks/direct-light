@@ -1,0 +1,231 @@
+import type { FixtureCategory, FixtureColorEngine, FixturePowerClass, FixtureUse, LightType } from '../types'
+
+// v0.5 fixture preset library. Each entry describes a real-world lighting
+// instrument in director-facing language; `directLightDefaults` is what gets
+// written into the live `LightConfig` when the preset is applied (see
+// V0_5_FIXTURE_SPEC.md §4–§5). The numbers below are copied verbatim from the
+// spec; do not hand-tune without updating the spec first.
+export type FixturePreset = {
+  id: string
+  label: string
+  brand: string
+  model: string
+  category: FixtureCategory
+  colorEngine: FixtureColorEngine
+  powerClass: FixturePowerClass
+  supportsColor: boolean
+  nativeCctRange?: [number, number]
+  nativeBeamAngle?: number
+  officialPowerW?: number
+  recommendedUses: FixtureUse[]
+  defaultModifiers: string[]
+  directLightDefaults: {
+    type: LightType
+    intensity: number
+    beamAngle: number
+    softness: number
+    distance: number
+    color: string
+    colorTemperature?: number
+  }
+  notes: string
+  sourceUrl?: string
+  sourceCheckedAt?: string
+}
+
+export const FIXTURE_PRESETS: FixturePreset[] = [
+  {
+    id: 'generic-cob-600d',
+    label: '600W COB 白光',
+    brand: 'Generic',
+    model: '600D',
+    category: 'cob',
+    colorEngine: 'daylight',
+    powerClass: 'large',
+    supportsColor: false,
+    nativeCctRange: [5600, 5600],
+    nativeBeamAngle: 55,
+    officialPowerW: 600,
+    recommendedUses: ['key', 'rim', 'background'],
+    defaultModifiers: ['standard-reflector'],
+    directLightDefaults: {
+      type: 'hard',
+      intensity: 2.2,
+      beamAngle: 45,
+      softness: 0.12,
+      distance: 9,
+      color: '#ffffff',
+      colorTemperature: 5600,
+    },
+    notes: '大功率白光 COB 语义预设。适合主光、逆光、背景打亮；裸灯偏硬。',
+  },
+  {
+    id: 'generic-cob-600b',
+    label: '600W COB 双色温',
+    brand: 'Generic',
+    model: '600B',
+    category: 'cob',
+    colorEngine: 'bi-color',
+    powerClass: 'large',
+    supportsColor: false,
+    nativeCctRange: [2700, 6500],
+    nativeBeamAngle: 55,
+    officialPowerW: 600,
+    recommendedUses: ['key', 'fill', 'background'],
+    defaultModifiers: ['standard-reflector'],
+    directLightDefaults: {
+      type: 'hard',
+      intensity: 2.0,
+      beamAngle: 50,
+      softness: 0.16,
+      distance: 9,
+      color: '#ffffff',
+      colorTemperature: 5600,
+    },
+    notes: '双色温大功率 COB。用于日光/钨丝之间快速切换，不作为彩色效果灯。',
+  },
+  {
+    id: 'nanlux-evoke-600c',
+    label: 'Nanlux Evoke 600C',
+    brand: 'Nanlux',
+    model: 'Evoke 600C',
+    category: 'cob',
+    colorEngine: 'nebula-c8',
+    powerClass: 'large',
+    supportsColor: true,
+    nativeCctRange: [1000, 20000],
+    nativeBeamAngle: 65,
+    officialPowerW: 600,
+    recommendedUses: ['key', 'rim', 'background', 'effect'],
+    defaultModifiers: ['bare', '25-degree-reflector'],
+    directLightDefaults: {
+      type: 'hard',
+      intensity: 2.15,
+      beamAngle: 65,
+      softness: 0.14,
+      distance: 9,
+      color: '#ffffff',
+      colorTemperature: 5600,
+    },
+    notes: '全彩点光源参考。官方页列 Rated Power 600W、Beam Angle 65°、Nebula C8 Light Engine、CCT 1000K-20000K。ASC/B&H 资料提到 25°反光罩、IP66、±200 G/M、全彩控制。Direct Light 第一版只映射为大功率全彩 COB，不复刻光度曲线。',
+  },
+  {
+    id: 'generic-led-panel-soft',
+    label: 'LED 面板柔光',
+    brand: 'Generic',
+    model: 'Soft Panel',
+    category: 'panel',
+    colorEngine: 'bi-color',
+    powerClass: 'medium',
+    supportsColor: false,
+    nativeCctRange: [2700, 6500],
+    nativeBeamAngle: 110,
+    recommendedUses: ['fill', 'key'],
+    defaultModifiers: ['built-in-diffusion'],
+    directLightDefaults: {
+      type: 'panel',
+      intensity: 1.2,
+      beamAngle: 80,
+      softness: 0.92,
+      distance: 7,
+      color: '#ffffff',
+      colorTemperature: 5600,
+    },
+    notes: '面板灯语义。默认更软、覆盖更宽，阴影边缘不应像裸 COB。',
+  },
+  {
+    id: 'generic-rgb-tube',
+    label: 'RGB 灯管',
+    brand: 'Generic',
+    model: 'RGB Tube',
+    category: 'tube',
+    colorEngine: 'rgbww',
+    powerClass: 'small',
+    supportsColor: true,
+    nativeCctRange: [2700, 10000],
+    nativeBeamAngle: 120,
+    recommendedUses: ['rim', 'background', 'effect'],
+    defaultModifiers: ['bare'],
+    directLightDefaults: {
+      type: 'panel',
+      intensity: 0.8,
+      beamAngle: 80,
+      softness: 0.86,
+      distance: 5,
+      color: '#2f6bff',
+      colorTemperature: undefined,
+    },
+    notes: '用于彩色轮廓、背景线条或环境色。第一版仍用简化面光近似。',
+  },
+  {
+    id: 'generic-fresnel-hard',
+    label: '菲涅尔硬光',
+    brand: 'Generic',
+    model: 'Fresnel',
+    category: 'fresnel',
+    colorEngine: 'daylight',
+    powerClass: 'medium',
+    supportsColor: false,
+    nativeCctRange: [5600, 5600],
+    nativeBeamAngle: 25,
+    recommendedUses: ['key', 'rim', 'background'],
+    defaultModifiers: ['fresnel'],
+    directLightDefaults: {
+      type: 'hard',
+      intensity: 1.9,
+      beamAngle: 28,
+      softness: 0.08,
+      distance: 10,
+      color: '#ffffff',
+      colorTemperature: 5600,
+    },
+    notes: '更窄、更硬、更有方向感。适合切出轮廓或打背景局部。',
+  },
+  {
+    id: 'generic-small-effect-rgb',
+    label: '小型 RGB 效果灯',
+    brand: 'Generic',
+    model: 'Mini RGB',
+    category: 'effect',
+    colorEngine: 'rgb',
+    powerClass: 'small',
+    supportsColor: true,
+    nativeBeamAngle: 40,
+    recommendedUses: ['effect', 'background', 'rim'],
+    defaultModifiers: ['bare'],
+    directLightDefaults: {
+      type: 'hard',
+      intensity: 0.7,
+      beamAngle: 35,
+      softness: 0.18,
+      distance: 5,
+      color: '#ff4fd8',
+      colorTemperature: undefined,
+    },
+    notes: '小功率彩色效果点，用于背景色块、边缘色、产品小高光。',
+  },
+  {
+    id: 'generic-practical-warm',
+    label: '暖色实景灯',
+    brand: 'Generic',
+    model: 'Practical Warm',
+    category: 'practical',
+    colorEngine: 'tungsten',
+    powerClass: 'small',
+    supportsColor: false,
+    nativeCctRange: [2200, 3200],
+    nativeBeamAngle: 180,
+    recommendedUses: ['background', 'effect'],
+    defaultModifiers: ['bare'],
+    directLightDefaults: {
+      type: 'soft',
+      intensity: 0.45,
+      beamAngle: 80,
+      softness: 0.6,
+      distance: 4,
+      color: '#ffffff',
+      colorTemperature: 3000,
+    },
+    notes: '模拟画面中出现或藏在布景里的暖色 practical。不是主力影视灯。',
+  },
+]
