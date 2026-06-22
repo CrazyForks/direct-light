@@ -26,6 +26,10 @@ jobs:
         working-directory: src-tauri
         run: |
           cargo generate-lockfile
+          # TEMPORARY pin: upstream time 0.3.50 is broken (unresolved import
+          # time_macros::timestamp). Hold time at 0.3.49 until a fixed 0.3.51+
+          # ships, then bump this --precise version or delete this line so time
+          # tracks the rest of the deps again. Other crates are unaffected.
           cargo update -p time --precise 0.3.49
 
       - name: Commit lockfile if it changed
