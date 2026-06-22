@@ -96,6 +96,7 @@ UI 操作
 
 - v0.6b 已落地；后续只修具体 bug，不要重做 `LightModifierVisual` / `DirectorLightBrief` / `lightBrief`。
 - v0.6d 已落地并通过验收；后续 v0.6e 收口应复用 `SceneObjectConfig` 和 `controlGearOptics` 的派生逻辑，不要另起一套 gear store，不要把派生光学写入 `SceneConfig`。
+- v0.8 多光源规格见 `V0_8_MULTI_LIGHT_SPEC.md`：继续复用 `SceneConfig.lights`、`src/state/actions/lightActions.ts`、`LightRig` 和现有 UI 子目录；不要新增第二套 light store，不要默认改成 6 灯场景，不要为了列表管理引入灯组/solo/排序等额外状态。
 - 新增更多灯光列表状态、配件标签、锁定状态时，只改 `src/ui/object-list/LightsSection.tsx` 或同目录小组件。
 - 新增 A/B 说明、导演视角简介或对比空状态时，优先改 `src/app/compare/*`，不要回填到 `AppShell.tsx`。
 - `src/data/*.ts` 允许较长，因为它们是规格表；不要为了行数把稳定数据拆得过碎。

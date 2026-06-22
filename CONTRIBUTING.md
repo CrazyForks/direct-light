@@ -61,8 +61,9 @@ npm run preview    # 本地预览已构建的产物
 
 ## 当前已知限制（第一版）
 
-- 最多 3 盏灯（`MAX_LIGHTS = 3`）；更多光源 / 多灯管理是开源后的 v0.9。
-- UI 仅简体中文；英语 / 日语多语言是开源后的 v0.8。
+- 最多 6 盏灯（`MAX_LIGHTS = 6`）；默认仍是 Key/Fill/Rim 三盏（v0.8 多灯管理）。
+- 暂不支持导入用户自定义灯具预设；自定义灯具预设 JSON 导入/导出计划放在 v0.9。
+- UI 仅简体中文；英语 / 日语多语言会在核心功能和字段更稳定后再做。
 - 桌面 / 封包工作台体验优先；移动端窄屏响应式后续单独排期。
 - 渲染为导演沟通向近似，非物理准确。
 
@@ -79,4 +80,4 @@ Direct Light is a white-studio lighting previz sandbox. To contribute:
 - Before any PR, make sure **`npx tsc -b`**, **`npm run lint`**, and **`npm run build`** all pass.
 - Read [`ARCHITECTURE.md`](ARCHITECTURE.md) for where code lives. Keep `src/App.tsx` thin; don't put logic back into the `LightPanel` / `ObjectList` / `AppShell` compatibility shells.
 - The renderer is a **communication-oriented approximation**, not a physically accurate simulation — prioritize readable, stable, real-time feedback. Rendering numbers live in `src/data/rendering.ts`.
-- Known first-release limits: max 3 lights, Simplified-Chinese-only UI, desktop-first. See [`ROADMAP.md`](ROADMAP.md).
+- Known limits: max 6 lights, Simplified-Chinese-only UI, desktop-first. See [`ROADMAP.md`](ROADMAP.md).

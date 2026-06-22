@@ -26,7 +26,7 @@ A frontend-only web app, no backend. It optimizes for **communication, real-time
 ## Features
 
 - 🎬 **Studio + people** — adjustable white studio (size, wall/ceiling toggles, seamless cyclorama, wall/floor reflectance), a rigged simplified figure, multi-actor blocking (up to 5), pose presets and joint tuning.
-- 💡 **Lighting** — up to 3 lights (hard / soft / panel) with position, height, distance, angle, intensity, color, color temperature, beam angle, and softness; drag-to-place; target lock (manual / lock-to-person / center-of-people).
+- 💡 **Lighting** — up to 6 lights (hard / soft / panel) with position, height, distance, angle, intensity, color, color temperature, beam angle, and softness; drag-to-place; target lock (manual / lock-to-person / center-of-people).
 - 🔦 **Fixture library** — 8 semantic fixture presets (COB, Nanlux Evoke 600C, LED panel, RGB tube, Fresnel, etc.); apply default light quality in one click, then fine-tune by hand.
 - 🎛️ **Modifiers + standalone control gear** — softbox / grid / reflector / diffusion on the light, plus black flag / reflector board / diffusion frame as in-studio gear, each with a director-readable approximate optic.
 - 🏠 **Props & structures** — tables, chairs, plinths, mannequins, a round live-stream stage, backdrops; draggable, rotatable, resizable; people can be placed onto supports and follow them live.
@@ -92,8 +92,9 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) (Chinese) for full module boundaries, a
 
 ## Known limits (first release)
 
-- Up to 3 lights (`MAX_LIGHTS = 3`); more lights / multi-light management is post-release **v0.9**.
-- Simplified-Chinese-only UI; English / Japanese localization is post-release **v0.8**.
+- Up to 6 lights (`MAX_LIGHTS = 6`); the default scene still ships 3 (Key/Fill/Rim) — multi-light management landed in **v0.8**.
+- No custom fixture preset import yet; JSON import/export for user fixture presets is planned for **v0.9**.
+- Simplified-Chinese-only UI for now; English / Japanese localization is postponed until the core feature fields are steadier.
 - Desktop-first; narrow mobile responsive layout is scheduled separately.
 - The renderer is a communication-oriented approximation, not a physically accurate simulation. Studio reflectance, soft light, colored spill, and gear optics all favor readable, stable, real-time output.
 - Black flag / reflector board / diffusion frame optics are runtime-derived approximations (no real mesh shadow for the flag; the reflector is a virtual weak fill; the diffusion frame modifies effective light quality).

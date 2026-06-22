@@ -87,6 +87,7 @@ function SceneContents({ scene, view, interactive, registerCapture }: SceneConte
 
       {interactive && view === 'free' && <FreeCameraCaptureBridge />}
       {view === 'free' && <FreeCameraClamp studio={scene.studio} />}
+      {interactive && view === 'free' && <FreeOrbitWheelRotate />}
 
       <GlobalFill studio={scene.studio} lights={scene.lights} objects={scene.objects} people={scene.people} />
       <Studio
@@ -208,6 +209,50 @@ function FreeCameraClamp({ studio }: { studio: StudioConfig }) {
       if (t) camera.lookAt(t.x, t.y, t.z)
     }
   })
+  return null
+}
+
+// v0.8 bugfix: on Mac touch-surface mice (Magic Mouse / trackpad) a horizontal
+// swipe arrives as a horizontal wheel event whose deltaY component makes
+// OrbitControls zoom — so "drag left/right to turn" felt like zoom. In free
+// orbit we treat a horizontal-dominant wheel as an azimuth rotation around the
+// orbit target and let only vertical wheel zoom. Button-drag rotation is
+// unchanged. The listener runs in the capture phase on window — an ancestor of
+// the canvas — so it preempts OrbitControls' own wheel handler and can stop the
+// event before it zooms. update() re-derives the orbit angle from the live
+// camera position each frame, so the manual rotation sticks.
+const WHEEL_ROTATE_SENSITIVITY = 0.005 // radians per unit of horizontal wheel delta
+const WHEEL_ROTATE_MAX_STEP = 0.2 // clamp per-event rotation so momentum swipes don't snap
+
+function FreeOrbitWheelRotate() {
+  const camera = useThree((s) => s.camera)
+  const gl = useThree((s) => s.gl)
+  const controls = useThree((s) => s.controls) as
+    | { target?: { x: number; y: number; z: number }; update?: () => void }
+    | null
+
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (e.target !== gl.domElement) return // only over the 3D canvas
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return // vertical → let OrbitControls zoom
+      const target = controls?.target
+      if (!target) return
+      e.preventDefault()
+      e.stopPropagation()
+      const theta = Math.max(-WHEEL_ROTATE_MAX_STEP, Math.min(WHEEL_ROTATE_MAX_STEP, -e.deltaX * WHEEL_ROTATE_SENSITIVITY))
+      const cos = Math.cos(theta)
+      const sin = Math.sin(theta)
+      const ox = camera.position.x - target.x
+      const oz = camera.position.z - target.z
+      camera.position.x = target.x + ox * cos + oz * sin
+      camera.position.z = target.z - ox * sin + oz * cos
+      camera.lookAt(target.x, target.y, target.z)
+      controls?.update?.()
+    }
+    window.addEventListener('wheel', onWheel, { capture: true, passive: false })
+    return () => window.removeEventListener('wheel', onWheel, { capture: true } as EventListenerOptions)
+  }, [camera, gl, controls])
+
   return null
 }
 

@@ -8,9 +8,15 @@
 
 ## 2. 当前状态
 
-状态更新时间：2026-06-21
+状态更新时间：2026-06-22
 
-**当前基线：v0.7.1 已发布（2026-06-21）**。v0.7.0 已完成开源第一版：MIT `LICENSE`（© 2026 Keming Ou）、`CONTRIBUTING.md`、`CHANGELOG.md`、英文 `README.en.md`、README 开源门面、`package.json` 开源元数据、仓库卫生、GitHub Pages 自动部署和公开仓库 https://github.com/oukeming64-tech/direct-light。随后用户选定 **Tauri** 做 macOS 桌面封包，`src-tauri/`、`build:tauri`、`.github/workflows/release.yml` 均已落地；CI 已发布 **v0.7.0** 和 **v0.7.1** 通用 macOS `.dmg`，v0.7.1 为 latest。v0.7.1 同步 `package.json` / `tauri.conf.json` / `Cargo.toml` 到 `0.7.1`，顶栏显示 `v0.7.1`，并用用户提供的 1024×1024 图（影棚 / 人物 / 紫色光圈，源图 `app-icon.png`）替换 Tauri 默认图标。个人复盘 `个人重构/` 继续保留本地、不入仓库。开源和桌面封包不再是当前待办；后续路线是 **v0.8 多语言**、**v0.9 更多光源 / 多灯管理**。
+**当前基线：v0.7.1 已发布（2026-06-21）**。v0.7.0 已完成开源第一版：MIT `LICENSE`（© 2026 Keming Ou）、`CONTRIBUTING.md`、`CHANGELOG.md`、英文 `README.en.md`、README 开源门面、`package.json` 开源元数据、仓库卫生、GitHub Pages 自动部署和公开仓库 https://github.com/oukeming64-tech/direct-light。随后用户选定 **Tauri** 做 macOS 桌面封包，`src-tauri/`、`build:tauri`、`.github/workflows/release.yml` 均已落地；CI 已发布 **v0.7.0** 和 **v0.7.1** 通用 macOS `.dmg`，v0.7.1 为 latest。v0.7.1 同步 `package.json` / `tauri.conf.json` / `Cargo.toml` 到 `0.7.1`，顶栏显示 `v0.7.1`，并用用户提供的 1024×1024 图（影棚 / 人物 / 紫色光圈，源图 `app-icon.png`）替换 Tauri 默认图标。个人复盘 `个人重构/` 继续保留本地、不入仓库。开源和桌面封包不再是当前待办；**2026-06-22 用户与 Codex 调整后续路线：先做 v0.8 更多光源 / 多灯管理，再做 v0.9 自定义灯具预设导入/导出；多语言 UI 后置到核心功能和字段更稳定之后。**
+
+**v0.8 多光源 / 多灯管理已通过用户视觉验收（Codex 复核，Claude Code 集成，2026-06-22）**：新增 `V0_8_MULTI_LIGHT_SPEC.md`，把 v0.8 拆成三刀：v0.8a 上限与新增灯闭环（`MAX_LIGHTS 3→6`、默认场景仍 3 灯、第 4-6 盏用简单确定性起始位置）、v0.8b 多灯列表可读性（保持左侧列表紧凑，必要时只抽 `LightRow.tsx`，不做灯组/solo/排序）、v0.8c A/B / 保存 / 导出 / 性能收口。规格明确不新增灯具型号、不做自定义 JSON、不做多语言、不新增第二套 light store；本轮按现有 `scene.lights`、A/B 摘要、保存/加载/导出路径完成收口，未引入运行时阴影预算或额外状态。
+
+**v0.8a + v0.8b 代码已落地并通过用户 6 灯视觉验收（Claude Code 集成/审核；机械改动由 Claude Code 调用 OpenRouter glm-5.2 起草，2026-06-22）**：按 `V0_8_MULTI_LIGHT_SPEC.md` 完成上限与新增灯闭环 + 多灯列表可读性。① v0.8a：`src/data/defaults.ts` `MAX_LIGHTS 3→6`；`src/data/rendering.ts` 新增 `ADDITIONAL_LIGHT_STARTS`（3 个确定性灯位 `{0,3.0,3.2}`/`{3.4,2.2,-1.8}`/`{-3.4,2.2,-1.8}`）；`src/state/actions/lightActions.ts` `addLight()` 按 `slot = lights.length - 3` 取灯位（第 4/5/6 盏分别用 slot 0/1/2），slot 越界回退原默认 `{-2.6,2.4,2.2}`，`position: { ...start }` 不改常量；`duplicateLight`/`removeLight` 签名与行为不变；默认场景仍只 3 盏（Key/Fill/Rim）。② v0.8b：`src/ui/object-list/LightsSection.tsx` 分组标题改为 `灯光 N/MAX_LIGHTS`，保留满额 `满 6` 与复制禁用；文件仍 ~85 行，未到 spec 的 ~130 行阈值，故**不抽** `LightRow.tsx`。③ v0.8c：`sceneDiff.diffLights` 与 `summarizeLighting` 现有实现已天然表达灯数（`A开x/n · B开y/m`、`N 灯`），无需改；保存/加载/复制天然携带 `scene.lights`，导出截当前画布；性能预算按 spec §2c 交真机判断，本轮未预先加运行时阴影预算，保留 `LightRig` 现有 `lights.map` 简单渲染。④ 文档：`README.md`/`README.en.md`/`CONTRIBUTING.md`/`CHANGELOG.md` 中的当前能力上限文案已同步到 6 灯（保留历史 PRD「建议 MVP」与默认场景「Key/Fill/Rim 三盏」原文）。分工：v0.8a 常量/`addLight`、v0.8b 标题计数等机械改动由 Claude Code 调用 OpenRouter glm-5.2 起草，Claude Code 逐行审核（确认 `tsconfig` 无 `noUncheckedIndexedAccess`、索引访问安全）后落盘并集成。Codex 复核：源码无三灯硬限制、A/B/保存/导出路径未裁剪灯数组、本地预览加到 6 盏后 `灯光 6/6` 与 `满 6` 正常、console 无 error；`npx tsc -b`/`npm run lint`/`npm run build`/`git diff --check` 全绿（既有 1.2MB 大包提醒非本轮新增）。**用户视觉验收通过**：6 盏全开不黑屏、列表可扫读、可继续进入后续 v0.9。`TopBar`/`package.json`/Tauri 版本号是否升到 `0.8.0` 留待后续发布动作，本轮未升。
+
+**两个交互 bug 修复已落地并通过用户手感确认（Claude Code，2026-06-22；与 v0.8 同一轮，非 v0.8 范围）**：① **人物可被拖出白棚**——`GroundDragController` 之前只把人物 XZ 夹到 ±20，远大于白棚地面（8×10）。改为在 `setPersonPositionXZ` 里按 `s.scene.studio` 尺寸把人物夹回地面 footprint（`x∈±(W/2−0.3)`、`z∈±(D/2−0.3)`，与 `duplicatePerson` 既有 ±3.8 约定一致），任何拖拽路径都不再出棚；确定性逻辑修复。② **自由视角左右拖动变成缩放**——查 three-stdlib `OrbitControls`：左键只能 ROTATE/PAN、不可能 DOLLY（只有中键 dolly），wheel 处理按 `deltaY` 缩放；用户真机是 Mac 触控表面鼠标/触控板把横扫当成带 `deltaY` 的滚轮→缩放。用户确认诊断后选定：**横扫=左右转、纵向滚动=缩放**。实现：`StudioScene.tsx` 新增 `FreeOrbitWheelRotate`（仅自由视角挂载），在 **window 捕获阶段**监听 `wheel`（canvas 之上的祖先，先于 OrbitControls 触发并能 `stopPropagation` 阻止其缩放）：仅当事件目标是 canvas 且 `|deltaX|>|deltaY|` 时，绕 OrbitControls `target` 按 Y 轴旋转相机（`WHEEL_ROTATE_SENSITIVITY=0.005`/单位、单次 clamp ±0.2rad），其余滚动照常交 OrbitControls 缩放；按住左键拖动转动不变。OrbitControls `update()` 每帧从相机实位重算 spherical，故手动旋转不被回弹。无新依赖、不改 `SceneConfig`。`tsc·lint·build·diff --check` 全绿。用户确认：横扫左右转、纵向滚动缩放、按住左键拖动仍转，人物拖动不再出棚。注：headless 预览无法复现 Mac 触控手势，按既定约定交用户肉眼确认。
 
 **v0.6e 收口已落地并通过用户视觉验收（Claude 主实现，Codex 文档/版本收口，2026-06-21）**：按 `V0_6E_CLOSEOUT_SPEC.md` 完成 v0.6 控光线最后收口，不加新光学、不加新器材。① A/B 差异摘要已把「控光器材」从「道具」中拆成独立 chip；② 保存/加载/复制/A-B 冻结交换回归通过，附件 `modifierId`、gear 对象和派生光学不丢；③ 导出截图回归通过，gear 视觉与 gear 光学可用于沟通；④ README 已补开源前限制说明（`MAX_LIGHTS=3`、仅中文、桌面优先、渲染为沟通向近似）。v0.6a-e 全线完成；TopBar 当时由 Codex 升到 `v0.6e`。后续 v0.7 / v0.7.1 已完成，当前不要再把 v0.7 当作下一步。
 
@@ -24,7 +30,7 @@
 
 **v0.5.1 渲染可信度已通过用户真机验收（Claude 实现，Codex 复核，2026-06-20）**：按 `V0_5_1_RENDERING_CREDIBILITY_SPEC.md` 完成三件小修：① `src/scene/studioGeometry.ts` + `Studio.tsx` 使用一体 cyclorama surface，减少地面/后墙拼接感；② `src/scene/LightVisual.tsx` + `LightRig.tsx` 让柔光、面光、RGB 灯管出现可见灯体；③ `floorReflectance` 进入 ambient/hemisphere/colored bounce 公式，让地面反弹对暗部和彩色棚染更可读。Codex 复核补齐“可见灯体本体也能点击/拖拽光源”，并把顶栏改为 `v0.5.1`。基础检查 `lint`/`build` 通过；桌面浏览器烟测 canvas 非空；用户真机验收通过。已知非阻塞：390px 窄屏布局会挤掉 3D 画布，当前产品按桌面/封包工作台验收，移动端响应式后续单独排期。范围仍不含 v0.6 控光附件、不改 v0.5.0 灯具预设、不提高灯光数量上限。
 
-**v0.6a 控光附件 MVP 已通过用户真机验收（Claude 集成，Codex 复核调值，2026-06-20）**：新增 `V0_6_MODIFIER_SPEC.md`，把 v0.6 拆为 0.6a-0.6e。第一刀只做“灯上附件 MVP”：中号柔光箱、蜂巢、标准反光罩、柔光布；用 `modifierId?: string` + 附件数据表 + 有效光质 helper 影响亮度/光束/柔硬/彩色溢光，不直接改坏原始灯光参数。Codex 预写 `src/types.ts` 的 `modifierId?: string`、`src/data/lightModifiers.ts`、`src/domain/lightModifiers.ts`；Claude 接入 `applyLightModifier`、`LightModifierSection`、`LightRig` effective params、`lighting.ts` spill multiplier 和 `sceneDiff` 附件差异。Codex 复核发现中号柔光箱与柔光布在偏柔灯上会一起撞到 softness/beam 上限、真机观感过近，因此把柔光箱调成更宽更软且略暗（`*0.76/+24°/+0.36/*0.95`），把柔光布调成明显更暗、只轻微变软和扩散（`*0.48/+4°/+0.12/*1.12`）。用户真机验收通过后，顶栏同步到 `v0.6a`。后续 v0.6b/c/d/e、v0.7 和 v0.7.1 均已完成；当前后续主线是 v0.8/v0.9。
+**v0.6a 控光附件 MVP 已通过用户真机验收（Claude 集成，Codex 复核调值，2026-06-20）**：新增 `V0_6_MODIFIER_SPEC.md`，把 v0.6 拆为 0.6a-0.6e。第一刀只做“灯上附件 MVP”：中号柔光箱、蜂巢、标准反光罩、柔光布；用 `modifierId?: string` + 附件数据表 + 有效光质 helper 影响亮度/光束/柔硬/彩色溢光，不直接改坏原始灯光参数。Codex 预写 `src/types.ts` 的 `modifierId?: string`、`src/data/lightModifiers.ts`、`src/domain/lightModifiers.ts`；Claude 接入 `applyLightModifier`、`LightModifierSection`、`LightRig` effective params、`lighting.ts` spill multiplier 和 `sceneDiff` 附件差异。Codex 复核发现中号柔光箱与柔光布在偏柔灯上会一起撞到 softness/beam 上限、真机观感过近，因此把柔光箱调成更宽更软且略暗（`*0.76/+24°/+0.36/*0.95`），把柔光布调成明显更暗、只轻微变软和扩散（`*0.48/+4°/+0.12/*1.12`）。用户真机验收通过后，顶栏同步到 `v0.6a`。后续 v0.6b/c/d/e、v0.7 和 v0.7.1 均已完成；当前后续主线是 v0.8 多灯管理、v0.9 自定义灯具预设。
 
 **v0.6 前开源结构清理已由 Codex 落地（2026-06-20，无行为变更）**：为避免开源前大文件继续膨胀，Codex 直接拆分三处偏胖入口并同步架构护栏。① `src/app/AppShell.tsx` 从 279 行主壳拆为布局壳 + `src/app/Stage.tsx` + `src/app/ViewBadge.tsx` + `src/app/canvasLayout.ts` + `src/app/compare/*`，A/B 对比画布不再塞在 AppShell。② `src/ui/ObjectList.tsx` 改为兼容导出壳，人物/灯光/道具结构/摄影机/白棚分别拆到 `src/ui/object-list/*`，公共 row 工具和分组组件独立。③ `src/ui/LightPanel.tsx` 改为兼容导出壳，灯光基础/颜色/位置/目标/光束拆到 `src/ui/light-panel/*`；v0.6a 附件 UI 已落在 `LightModifierSection.tsx`。`npm run lint` 与 `npm run build` 通过；build 仍有既有大包提醒（Three/R3F 主包 1.21MB），不影响本次无行为重构。已同步 `ARCHITECTURE.md`、`CLAUDE.md`、`HERMES.md`，Claude/Hermes 后续不得把实现逻辑塞回壳文件。
 
@@ -120,6 +126,12 @@ Claude Code 更偏工程实现和代码落地。
 - 让每次迭代都有可见画面改进。
 - 让文档、代码和当前实现保持同步。
 
+### 草稿工具边界
+
+- **Hermes** 是独立 agent：只能通过明确 handoff 由用户转交；只起草被点名的小范围 patch；不拥有功能、不宣布完成。
+- **OpenRouter** 是 Claude Code 调用的代码草稿 subagent 路径：Claude Code 可以让 `glm` / `qwen` 起草机械代码，但 Claude Code 必须逐行审核、集成和验证。
+- 不要把二者合并成一个外包渠道。它们的职责和调用路径不同；最终产品判断仍归用户 + Codex，工程整合仍归 Claude Code / Codex。
+
 ## 4. 工作流程
 
 建议每轮开发按这个顺序走：
@@ -145,7 +157,7 @@ Claude Code 更偏工程实现和代码落地。
 - 版本同步：`package.json`、`src-tauri/tauri.conf.json`、`src-tauri/Cargo.toml`、TopBar 均为 `0.7.1` / `v0.7.1`。
 - Release：GitHub Actions 已构建并发布 v0.7.1 通用 macOS `.dmg`，当前为 latest。
 - 仓库卫生：移除不需要的 iOS / Android 图标变体；`app-icon.png` 保留为图标源文件。
-- 文档同步：README / README.en / CHANGELOG / ROADMAP / COLLABORATION / HERMES / CLAUDE / AGENTS 口径统一到 v0.7.1；v0.8 / v0.9 是后续主线。
+- 文档同步：README / README.en / CHANGELOG / ROADMAP / COLLABORATION / HERMES / CLAUDE / AGENTS 口径统一到 v0.7.1；后续主线后来在 2026-06-22 调整为 v0.8 多灯管理、v0.9 自定义灯具预设。
 
 ### v0.7.0 - 可开源第一版（Claude Code 主导）
 
@@ -199,7 +211,7 @@ Claude Code 更偏工程实现和代码落地。
 
 后续状态：
 
-- v0.6 控光线全线完成。后续 v0.7 / v0.7.1 已完成并发布；当前后续主线是 v0.8 多语言、v0.9 更多光源 / 多灯管理。
+- v0.6 控光线全线完成。后续 v0.7 / v0.7.1 已完成并发布；当前后续主线是 v0.8 更多光源 / 多灯管理、v0.9 自定义灯具预设导入/导出，多语言后置。
 
 ### v0.6d - 控光器材近似光学（用户真机视觉验收通过）
 
@@ -224,7 +236,7 @@ Claude Code 更偏工程实现和代码落地。
 
 后续状态：
 
-- v0.6d 已完成，不再改光学公式或 gear 数值；v0.6e、v0.7 和 v0.7.1 也已完成。当前后续主线是 v0.8/v0.9。
+- v0.6d 已完成，不再改光学公式或 gear 数值；v0.6e、v0.7 和 v0.7.1 也已完成。当前后续主线是 v0.8 多灯管理、v0.9 自定义灯具预设。
 
 ### v0.6c - 棚内独立控光器材（用户视觉验收通过）
 
@@ -292,8 +304,8 @@ Claude Code 更偏工程实现和代码落地。
 - 新增 `V0_5_FIXTURE_SPEC.md`：定义灯具器械预设库的数据结构、UI 文案、首批 8 个预设、Nanlux Evoke 600C 的资料来源和 Direct Light 内部映射。
 - 更新 `CLAUDE.md` / `HERMES.md` / `ROADMAP.md`，让 Claude/Hermes 下一轮先读这两份规格。
 - 用户补充协作规则：不能写“Claude/Hermes 实现”这种模糊归属。谁的活就是谁的活；Hermes 是候补草稿 agent，只做被明确点名的小块，不能独立宣称完成 Claude-owned 功能。
-- 当前灯光数量复核：多灯已支持，默认 Key/Fill/Rim 三盏；左侧灯光列表可添加/复制/删除，但 `MAX_LIGHTS = 3`，满 3 后显示“满 3”。开源第一版暂不提高上限；如果要更多灯，开源后单独做 v0.9。
-- 用户新增路线判断：v0.7 完成后即可开源；开源第一版不等待多语言或更多光源。该路线已在 v0.7 / v0.7.1 执行完成；多语言继续放到 v0.8，更多光源 / 多灯管理继续放到 v0.9。
+- 当时灯光数量复核：多灯已支持，默认 Key/Fill/Rim 三盏；左侧灯光列表可添加/复制/删除，但 `MAX_LIGHTS = 3`，满 3 后显示“满 3”。开源第一版暂不提高上限；当时计划开源后单独做更多灯，2026-06-22 已调整为 v0.8 先做多光源 / 多灯管理。
+- 用户新增路线判断：v0.7 完成后即可开源；开源第一版不等待多语言或更多光源。该路线已在 v0.7 / v0.7.1 执行完成；2026-06-22 用户与 Codex 进一步判断，过早 i18n 会拖慢新增功能字段，因此后续改为 v0.8 更多光源 / 多灯管理、v0.9 自定义灯具预设导入/导出，多语言后置。
 - v0.4.8 落地后，Codex 对 `V0_5_FIXTURE_SPEC.md` 做开工前定稿：面板灯改为更软更宽（80° / 0.92），RGB 灯管改为更软更铺开（80° / 0.86），暖色 practical 改为 `tungsten`，UI 增加能力标签，验收清单补齐全彩能力、自定义参数和不残留 RGB 色的边界。
 
 下一步建议：
@@ -579,7 +591,7 @@ Claude Code 更偏工程实现和代码落地。
 - 新增 `src/data/sceneObjects.ts`：定义首批结构对象预设、默认尺寸、默认位置、材质、投影规则、用途说明和 v0.3 默认沟通场景。
 - `RENDERING_SPEC.md §6.5` 增加白棚结构与道具的视觉规则、尺寸表、材质规则、俯视图表达和验收场景。
 - `ROADMAP.md` 标记 v0.3 Codex 规格已完成，下一步交给 Claude Code 工程接入。
-- 封包/开源策略调整：不在 v0.3 后立即封包，等 v0.3-v0.6 核心功能都完成且稳定后再做 v0.7 可开源第一版；这条策略已在 v0.7 / v0.7.1 执行完成，后续再做多语言和更多光源。
+- 封包/开源策略调整：不在 v0.3 后立即封包，等 v0.3-v0.6 核心功能都完成且稳定后再做 v0.7 可开源第一版；这条策略已在 v0.7 / v0.7.1 执行完成，后续路线已调整为先更多光源、再自定义灯具预设，多语言后置。
 
 ### v0.2.3 - 侧视修复 + 拖拽控制器去重 + 灯-人耦合排查
 
@@ -872,8 +884,9 @@ P2（部分完成）：
 18. ✅ **[Claude + Codex] v0.6e 收口**（用户视觉验收通过）：按 `V0_6E_CLOSEOUT_SPEC.md` 做 A/B「控光器材」差异类别、保存/加载/复制/A-B/导出回归、README 开源前限制说明；TopBar 已升 `v0.6e`。
 19. ✅ **[Claude 主导 + Codex 复核] v0.7 可开源第一版 / 桌面封包**：正式开源 README / license / 运行说明 / 已知限制 / 路线图、GitHub Pages、Tauri macOS 封包与 Release CI 均已完成。
 20. ✅ **[Claude 主导] v0.7.1 应用图标 / Release 收口**：正式 App 图标已替换，`package.json` / `tauri.conf.json` / `Cargo.toml` / TopBar 版本同步到 `0.7.1`，latest `.dmg` 已发布。
-21. **[后续] v0.8 多语言**：简体中文 / 英语 / 日语 UI 文案抽取与切换；保存方案、A/B 和场景数据不能依赖语言。
-22. **[后续] v0.9 更多光源 / 多灯管理**：开源后根据真实使用反馈提高灯光上限并补列表管理与性能验收。
+21. ✅ **[Claude Code + Codex] v0.8 更多光源 / 多灯管理**（用户视觉验收通过）：灯光上限提高到 6、默认仍 Key/Fill/Rim 三盏、列表计数/满额状态可读；A/B、保存、导出路径确认不丢 6 灯。
+22. **[后续] v0.9 自定义灯具预设导入/导出**：用严格 JSON schema 支持用户保存、导出、导入自己的灯具预设，不做任意参数上传或真实 IES/光度文件。
+23. **[后续] 多语言 UI**：在核心功能和字段更稳定后再抽取简体中文 / 英语 / 日语文案；保存方案、A/B 和场景数据不能依赖语言。
 
 ## 8. 开发验收清单
 
@@ -949,8 +962,8 @@ v0.2 多人物、v0.3 白棚结构/道具、v0.4 人物姿态、v0.4.5 承载物
 
 建议先做最小闭环：
 
-1. v0.8 多语言：抽取 UI 文案，支持简体中文 / 英语 / 日语，并验证切换语言不改变场景、A/B 或保存方案。
-2. v0.9 更多光源 / 多灯管理：根据开源后的真实反馈决定灯光上限、列表折叠/分组和性能验收。
+1. v0.9 自定义灯具预设导入/导出：用严格 JSON schema 支持用户沉淀自己的灯具参数。
+2. 后续多语言：等核心功能和字段稳定后，再抽取简体中文 / 英语 / 日语 UI 文案，并验证切换语言不改变场景、A/B 或保存方案。
 
 ## 11. Codex 视觉定夺（v0.1.1）
 
@@ -979,7 +992,8 @@ Codex 已在 2026-06-18 定夺：
 - v0.5：灯具器械预设库，例如 Nanlux Evoke 600C / 南光体系灯具。
 - v0.6：控光附件和棚内控光器材，例如柔光箱、蜂巢、黑旗、反光板、柔光布框。
 - v0.7：开源第一版、GitHub Pages、Tauri macOS 桌面封包和 v0.7.1 正式图标。
-- v0.8：多语言 UI。
-- v0.9：更多光源 / 多灯管理。
+- v0.8：更多光源 / 多灯管理。
+- v0.9：自定义灯具预设导入/导出。
+- 后续：多语言 UI。
 
 如何运行：`npm install` → `npm run dev`（端口 5173）。`.claude/launch.json` 已配置预览。

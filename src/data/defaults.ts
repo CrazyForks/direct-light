@@ -77,6 +77,6 @@ export function buildDefaultScene(): SceneConfig {
   }
 }
 
-export const MAX_LIGHTS = 3
+export const MAX_LIGHTS = 6
 export const MAX_PEOPLE = 5
 export const MAX_OBJECTS = 12

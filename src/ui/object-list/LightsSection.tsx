@@ -16,7 +16,7 @@ export function LightsSection() {
 
   return (
     <Group
-      title="灯光"
+      title={`灯光 ${lights.length}/${MAX_LIGHTS}`}
       action={
         lights.length < MAX_LIGHTS ? (
           <button

@@ -37,16 +37,28 @@ export function createPersonActions(
       })),
 
     setPersonPositionXZ: (id, x, z) =>
-      set((s) => ({
-        scene: {
-          ...s.scene,
-          people: s.scene.people.map((p) =>
-            // Dragging a person manually in XZ means the user is intentionally
-            // repositioning them — detach from any live support binding.
-            p.id === id ? { ...p, position: { ...p.position, x, z }, ...CLEAR_SUPPORT_BINDING } : p,
-          ),
-        },
-      })),
+      set((s) => {
+        // Keep a dragged person on the studio floor. The floor is finite (even
+        // though the front +Z is open for the camera), so clamp XZ into the
+        // footprint with a small margin — otherwise the pointer-ray can drag a
+        // person right out of the white box. Margin matches duplicatePerson's
+        // ±(halfW-0.2) convention.
+        const margin = 0.3
+        const halfW = s.scene.studio.width / 2
+        const halfZ = s.scene.studio.depth / 2
+        const cx = Math.min(Math.max(x, -(halfW - margin)), halfW - margin)
+        const cz = Math.min(Math.max(z, -(halfZ - margin)), halfZ - margin)
+        return {
+          scene: {
+            ...s.scene,
+            people: s.scene.people.map((p) =>
+              // Dragging a person manually in XZ means the user is intentionally
+              // repositioning them — detach from any live support binding.
+              p.id === id ? { ...p, position: { ...p.position, x: cx, z: cz }, ...CLEAR_SUPPORT_BINDING } : p,
+            ),
+          },
+        }
+      }),
 
     addPerson: () => {
       const s = get()

@@ -12,6 +12,14 @@ import type { LightType } from '../types'
 // §3 reference point — lights aim between chest and face, not the feet.
 export const PERSON_TARGET = { x: 0, y: 1.2, z: 0 }
 
+// v0.8a — deterministic start positions for the 4th–6th added lights, used by
+// addLight() so extra lights do not stack on one point (V0_8_MULTI_LIGHT_SPEC §2).
+export const ADDITIONAL_LIGHT_STARTS = [
+  { x: 0, y: 3.0, z: 3.2 },
+  { x: 3.4, y: 2.2, z: -1.8 },
+  { x: -3.4, y: 2.2, z: -1.8 },
+] as const
+
 // §4 default white studio
 export const DEFAULT_STUDIO = {
   width: 8,

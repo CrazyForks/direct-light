@@ -2,7 +2,7 @@ import type { Store, StoreSet, StoreGet } from '../storeTypes'
 import type { LightConfig } from '../../types'
 import { mapLights, chestTarget } from '../storeHelpers'
 import { getPeopleCenterAimTarget } from '../../domain/lightTargets'
-import { LIGHT_TYPE_DEFAULTS, PERSON_TARGET } from '../../data/rendering'
+import { ADDITIONAL_LIGHT_STARTS, LIGHT_TYPE_DEFAULTS, PERSON_TARGET } from '../../data/rendering'
 import { MAX_LIGHTS } from '../../data/defaults'
 import { FIXTURE_PRESETS } from '../../data/fixturePresets'
 import { LIGHT_MODIFIER_PRESETS } from '../../data/lightModifiers'
@@ -47,12 +47,18 @@ export function createLightActions(
       const id = newId('light')
       const person = s.scene.people[0]
       const base = LIGHT_TYPE_DEFAULTS.soft
+      // v0.8a — 4th–6th added lights use deterministic non-overlapping starts; earlier lights keep the default.
+      const slot = s.scene.lights.length - 3
+      const start =
+        slot >= 0 && slot < ADDITIONAL_LIGHT_STARTS.length
+          ? ADDITIONAL_LIGHT_STARTS[slot]
+          : { x: -2.6, y: 2.4, z: 2.2 }
       const light: LightConfig = {
         id,
         name: `Light ${s.scene.lights.length + 1}`,
         type: 'soft',
         enabled: true,
-        position: { x: -2.6, y: 2.4, z: 2.2 },
+        position: { ...start },
         target: person ? chestTarget(person) : { ...PERSON_TARGET },
         targetMode: 'manual',
         targetPersonId: person?.id,

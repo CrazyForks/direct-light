@@ -2,6 +2,8 @@
 
 Hermes is an auxiliary coding agent for Direct Light.
 
+Hermes is **not** OpenRouter. OpenRouter is Claude Code's code-drafting subagent path; Hermes is a separate standalone agent reached only through an explicit handoff that the user relays.
+
 Use Hermes as a fast implementation drafter, not as the product owner. The product direction belongs to the user + Codex. Claude Code is the main engineering reviewer/integrator when available. Hermes should make bounded, easy-to-review patches against precise specs.
 
 Hard rule: Hermes does not own a feature. Hermes owns only the exact subtask explicitly assigned in the current handoff. If a spec says Claude owns integration, Hermes must not implement the whole feature or mark it complete.
@@ -25,9 +27,10 @@ Before touching code, read:
 13. `V0_6C_GEAR_SPEC.md` — completed v0.6c standalone control-gear scope. User visual acceptance passed on 2026-06-21.
 14. `V0_6D_OPTICS_SPEC.md` — completed v0.6d optical-approximation scope. User visual acceptance passed on 2026-06-21.
 15. `V0_6E_CLOSEOUT_SPEC.md` — completed v0.6e closeout scope. User visual acceptance passed on 2026-06-21; v0.6 control line is complete.
-16. Relevant source files for the assigned task.
+16. `V0_8_MULTI_LIGHT_SPEC.md` — current v0.8 split and acceptance criteria. Read before touching `MAX_LIGHTS`, light actions, `LightsSection`, or multi-light performance.
+17. Relevant source files for the assigned task.
 
-Do not rely on stale assumptions from earlier versions. Current state is v0.7.1: the project is public on GitHub, GitHub Pages auto-deploy is live, Tauri macOS packaging is set up, and v0.7.1 is the latest published Release with the official app icon. v0.6a/b/c/d/e and v0.7/v0.7.1 are complete. Hermes has no active task unless a concrete subtask with exact write scope is assigned; likely future work is v0.8 multilingual UI or v0.9 more lights / multi-light management.
+Do not rely on stale assumptions from earlier versions. Current state is v0.7.1 published plus v0.8 accepted in the working tree: the project is public on GitHub, GitHub Pages auto-deploy is live, Tauri macOS packaging is set up, and v0.7.1 is the latest published Release with the official app icon. v0.6a/b/c/d/e, v0.7/v0.7.1, and v0.8 more lights / multi-light management are complete; v0.8 passed user visual acceptance on 2026-06-22. Hermes has no active task unless a concrete subtask with exact write scope is assigned; likely future work is v0.9 custom fixture preset import/export. Multilingual UI is intentionally postponed until the core feature fields are steadier.
 
 ## 2. Role Boundary
 
@@ -175,7 +178,7 @@ Good candidates:
 - Small follow-up fixes from v0.4.7 user acceptance, only if the user reports a concrete issue.
 - ~~Store/action split subtasks.~~ ✅ Done in v0.4.8 by Claude (glm-5.2 drafted the 8 factory files). Do not redo it.
 - v0.5.1 acceptance fixes only when assigned, strictly per the user's concrete bug report. Do not redo `studioGeometry.ts`, `LightVisual.tsx`, `LightRig` wiring, or reflectance formulas.
-- v0.6 and v0.7/v0.7.1 are complete and accepted/published. Hermes must not change modifier numbers, formulas, director-brief copy, gear presets, `controlGearOptics` values, `sceneDiff` gear split, `MAX_LIGHTS`, release metadata, desktop packaging config, or v0.6/v0.7 docs unless Codex/Claude assigns a concrete regression fix or docs-sync patch. Future v0.8/v0.9 work may be drafted only when assigned with exact scope; Hermes must not own or announce a release.
+- v0.6, v0.7/v0.7.1, and v0.8 are complete and accepted/published-or-ready. Hermes must not change modifier numbers, formulas, director-brief copy, gear presets, `controlGearOptics` values, `sceneDiff` gear split, `MAX_LIGHTS`, release metadata, desktop packaging config, or v0.6/v0.7/v0.8 docs unless Codex/Claude assigns a concrete regression fix or docs-sync patch. Future v0.9 work may be drafted only when assigned with exact scope; Hermes must not own or announce a release. v0.9 is custom fixture preset import/export, and multilingual UI is later.
 - Architecture split subtasks only when assigned by exact file. Hermes must not perform broad refactors, move folders, or collapse `src/ui/light-panel/*`, `src/ui/object-list/*`, or `src/app/compare/*` back into the old shell files.
 
 ## 7.4 ✅ DONE + USER ACCEPTED — v0.6e closeout (handoff 2026-06-21)
