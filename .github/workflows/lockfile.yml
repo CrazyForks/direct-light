@@ -1,0 +1,41 @@
+name: Update Cargo.lock
+
+# One-shot / on-demand: generate src-tauri/Cargo.lock and commit it so the
+# desktop release build is reproducible instead of re-resolving Rust deps on
+# every tag (which is how the broken upstream `time` 0.3.50 slipped in).
+# Run manually from the Actions tab, or:  gh workflow run lockfile.yml
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      # generate-lockfile only resolves the dependency graph (no compile, no
+      # system libs needed), so ubuntu is fine even for the macOS-only tauri deps.
+      - name: Generate lockfile (pin time to 0.3.49)
+        working-directory: src-tauri
+        run: |
+          cargo generate-lockfile
+          cargo update -p time --precise 0.3.49
+
+      - name: Commit lockfile if it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src-tauri/Cargo.lock
+          if git diff --cached --quiet; then
+            echo "Cargo.lock unchanged — nothing to commit."
+          else
+            git commit -m "ci: commit src-tauri/Cargo.lock for reproducible desktop builds"
+            git push
+          fi
