@@ -97,6 +97,7 @@ UI 操作
 - v0.6b 已落地；后续只修具体 bug，不要重做 `LightModifierVisual` / `DirectorLightBrief` / `lightBrief`。
 - v0.6d 已落地并通过验收；后续 v0.6e 收口应复用 `SceneObjectConfig` 和 `controlGearOptics` 的派生逻辑，不要另起一套 gear store，不要把派生光学写入 `SceneConfig`。
 - v0.8 多光源规格见 `V0_8_MULTI_LIGHT_SPEC.md`：继续复用 `SceneConfig.lights`、`src/state/actions/lightActions.ts`、`LightRig` 和现有 UI 子目录；不要新增第二套 light store，不要默认改成 6 灯场景，不要为了列表管理引入灯组/solo/排序等额外状态。
+- v0.9 自定义灯具规格见 `V0_9_CUSTOM_FIXTURE_SPEC.md`（已完成，用户验收通过 2026-06-23）：纯数据/计算放 `src/domain/customFixtures.ts`（单条归一/构造/合并查找）和 `src/domain/customFixturePack.ts`（文件级导入导出/校验）；store 用独立 `customFixtures` slice（不进 `SceneConfig`）+ `src/state/actions/fixtureActions.ts`，持久化在 `src/lib/storage.ts`（key `direct-light.customFixtures.v1`，与 `presets.v1` 分开）；UI 只改 `src/ui/light-panel/*`（`LightBaseSection` 下拉 + `LightFixtureActions.tsx`）。`FixturePreset` 类型已上移 `src/types.ts` 单一真源（`data/fixturePresets.ts` re-export）。不要把自定义器械塞进 `SceneConfig`，不要再造第二套 fixture 查找，不要让 `applyFixturePreset` 绕过 `findFixtureById`。
 - 新增更多灯光列表状态、配件标签、锁定状态时，只改 `src/ui/object-list/LightsSection.tsx` 或同目录小组件。
 - 新增 A/B 说明、导演视角简介或对比空状态时，优先改 `src/app/compare/*`，不要回填到 `AppShell.tsx`。
 - `src/data/*.ts` 允许较长，因为它们是规格表；不要为了行数把稳定数据拆得过碎。

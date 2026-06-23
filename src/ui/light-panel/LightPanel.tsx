@@ -1,5 +1,5 @@
-import { FIXTURE_PRESETS } from '../../data/fixturePresets'
 import { LIGHT_TYPE_DEFAULTS, LIGHT_TYPE_LABELS } from '../../data/rendering'
+import { findFixtureById } from '../../domain/customFixtures'
 import { formatEffectiveLightSummary, getEffectiveLightParams } from '../../domain/lightModifiers'
 import { azimuthDeg, horizontalDistance, positionFromPolar } from '../../lib/geometry'
 import { useStore } from '../../state/store'
@@ -15,6 +15,7 @@ import { LightTargetSection } from './LightTargetSection'
 export function LightPanel({ id }: { id: string }) {
   const light = useStore((s) => s.scene.lights.find((candidate) => candidate.id === id))
   const people = useStore((s) => s.scene.people)
+  const customFixtures = useStore((s) => s.customFixtures)
   const updateLight = useStore((s) => s.updateLight)
   const toggleLight = useStore((s) => s.toggleLight)
   const aimLightAtPerson = useStore((s) => s.aimLightAtPerson)
@@ -24,7 +25,7 @@ export function LightPanel({ id }: { id: string }) {
 
   if (!light || !people.length) return null
 
-  const fixture = FIXTURE_PRESETS.find((candidate) => candidate.id === light.fixturePresetId)
+  const fixture = findFixtureById(light.fixturePresetId, customFixtures)
   const effective = getEffectiveLightParams(light)
   const modifier = effective.modifier
   const fixtureLabel = fixture ? fixture.label : LIGHT_TYPE_LABELS[light.type]
@@ -54,6 +55,7 @@ export function LightPanel({ id }: { id: string }) {
       <LightBaseSection
         light={light}
         fixture={fixture}
+        customFixtures={customFixtures}
         onApplyFixture={(fixturePresetId) => applyFixturePreset(id, fixturePresetId)}
         onNameChange={(name) => patchLight({ name })}
         onTypeChange={changeType}

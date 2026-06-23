@@ -4,7 +4,7 @@ import { mapLights, chestTarget } from '../storeHelpers'
 import { getPeopleCenterAimTarget } from '../../domain/lightTargets'
 import { ADDITIONAL_LIGHT_STARTS, LIGHT_TYPE_DEFAULTS, PERSON_TARGET } from '../../data/rendering'
 import { MAX_LIGHTS } from '../../data/defaults'
-import { FIXTURE_PRESETS } from '../../data/fixturePresets'
+import { findFixtureById } from '../../domain/customFixtures'
 import { LIGHT_MODIFIER_PRESETS } from '../../data/lightModifiers'
 import { newId } from '../../lib/storage'
 
@@ -163,7 +163,7 @@ export function createLightActions(
             },
           }
         }
-        const preset = FIXTURE_PRESETS.find((p) => p.id === fixturePresetId)
+        const preset = findFixtureById(fixturePresetId, s.customFixtures)
         if (!preset) return s // unknown id → no-op
         const d = preset.directLightDefaults
         // seed only the光质 params; keep id/name/enabled/position/target/targetMode/targetPersonId

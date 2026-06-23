@@ -158,6 +158,64 @@ export type FixturePowerClass = 'small' | 'medium' | 'large' | 'very-large'
 
 export type FixtureUse = 'key' | 'fill' | 'rim' | 'background' | 'effect'
 
+// v0.9: where a fixture comes from. Built-in library entries are 'builtin' (or
+// undefined); user-authored ones are 'custom'.
+export type FixtureSource = 'builtin' | 'custom'
+
+// The shape of one fixture in the library. Built-in entries live in
+// src/data/fixturePresets.ts (FIXTURE_PRESETS); user-authored ones are
+// CustomFixturePreset (below) and share this exact shape. `directLightDefaults`
+// is what actually gets seeded into a LightConfig when the fixture is applied;
+// the native* / official* fields are real-world reference only.
+export type FixturePreset = {
+  id: string
+  label: string
+  brand: string
+  model: string
+  category: FixtureCategory
+  colorEngine: FixtureColorEngine
+  powerClass: FixturePowerClass
+  supportsColor: boolean
+  nativeCctRange?: [number, number]
+  nativeBeamAngle?: number
+  officialPowerW?: number
+  recommendedUses: FixtureUse[]
+  defaultModifiers: string[]
+  directLightDefaults: {
+    type: LightType
+    intensity: number
+    beamAngle: number
+    softness: number
+    distance: number
+    color: string
+    colorTemperature?: number
+  }
+  notes: string
+  sourceUrl?: string
+  sourceCheckedAt?: string
+  // v0.9: 'builtin' (or undefined) for the bundled library, 'custom' for
+  // user-authored fixtures. Lets the merged dropdown tag/manage custom entries.
+  source?: FixtureSource
+}
+
+// v0.9: a user-authored fixture. Same shape as a built-in (so it is fully
+// interchangeable in the 器械 dropdown + applyFixturePreset) plus the required
+// provenance/identity metadata the bundled library doesn't carry.
+export type CustomFixturePreset = FixturePreset & {
+  source: 'custom'
+  createdAt: number
+  updatedAt: number
+}
+
+// v0.9: the import/export envelope. A "pack" holds 1..N custom fixtures so a
+// single-fixture export and a whole-library export use the same file shape.
+export type CustomFixturePack = {
+  schema: 'direct-light/custom-fixtures'
+  version: number // current = 1
+  exportedAt?: number
+  fixtures: CustomFixturePreset[]
+}
+
 export type LightConfig = {
   id: string
   name: string

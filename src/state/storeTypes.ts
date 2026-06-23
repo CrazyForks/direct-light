@@ -2,6 +2,7 @@ import type { StoreApi } from 'zustand'
 import type {
   CameraConfig,
   CameraTargetMode,
+  CustomFixturePreset,
   LightConfig,
   LightTargetMode,
   LightingPreset,
@@ -27,6 +28,9 @@ export type Store = {
   selection: Selection
   viewMode: ViewMode
   presets: LightingPreset[]
+  // v0.9c: user-authored fixture library (persisted to localStorage), merged
+  // with the built-in FIXTURE_PRESETS in the 器械 dropdown + applyFixturePreset.
+  customFixtures: CustomFixturePreset[]
   dragTarget: DragTarget
   compareB: CompareSnapshot | null
   // v0.4c: bumped when the camera panel asks the free-view bridge to capture the
@@ -65,8 +69,20 @@ export type Store = {
   removeLight: (id: string) => void
   aimLightAtPerson: (id: string, personId?: string) => void
   setLightTargetMode: (id: string, mode: LightTargetMode, personId?: string) => void
-  // v0.5: seed a light from a fixture preset (undefined → back to 自定义参数)
+  // v0.5: seed a light from a fixture preset (undefined → back to 自定义参数).
+  // v0.9c: resolves across built-in + custom fixtures.
   applyFixturePreset: (lightId: string, fixturePresetId: string | undefined) => void
+
+  // v0.9c: custom fixture library management (all persisted to localStorage).
+  // saveCurrentLightAsFixture snapshots a light's quality params into a new
+  // custom fixture and points that light at it. removeCustomFixture drops a
+  // custom fixture and clears the marker on any light that referenced it (raw
+  // params untouched). importCustomFixtures parses a pack file and returns a
+  // summary. exportCustomFixtures serializes the whole custom library.
+  saveCurrentLightAsFixture: (lightId: string, name: string) => void
+  removeCustomFixture: (fixtureId: string) => void
+  importCustomFixtures: (text: string) => { added: number; errors: string[]; warnings: string[] }
+  exportCustomFixtures: () => string
   // v0.6a: attach a control modifier to a light (undefined → 无附件); only writes
   // modifierId, never the raw intensity/beamAngle/softness.
   applyLightModifier: (lightId: string, modifierId: string | undefined) => void

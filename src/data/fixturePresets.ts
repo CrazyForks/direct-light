@@ -1,38 +1,15 @@
-import type { FixtureCategory, FixtureColorEngine, FixturePowerClass, FixtureUse, LightType } from '../types'
+import type { FixturePreset } from '../types'
+
+// v0.9: the FixturePreset shape now lives in src/types.ts (single source of
+// truth shared with CustomFixturePreset). Re-export it here so existing callers
+// that import the type from this module keep working unchanged.
+export type { FixturePreset }
 
 // v0.5 fixture preset library. Each entry describes a real-world lighting
 // instrument in director-facing language; `directLightDefaults` is what gets
 // written into the live `LightConfig` when the preset is applied (see
 // V0_5_FIXTURE_SPEC.md §4–§5). The numbers below are copied verbatim from the
 // spec; do not hand-tune without updating the spec first.
-export type FixturePreset = {
-  id: string
-  label: string
-  brand: string
-  model: string
-  category: FixtureCategory
-  colorEngine: FixtureColorEngine
-  powerClass: FixturePowerClass
-  supportsColor: boolean
-  nativeCctRange?: [number, number]
-  nativeBeamAngle?: number
-  officialPowerW?: number
-  recommendedUses: FixtureUse[]
-  defaultModifiers: string[]
-  directLightDefaults: {
-    type: LightType
-    intensity: number
-    beamAngle: number
-    softness: number
-    distance: number
-    color: string
-    colorTemperature?: number
-  }
-  notes: string
-  sourceUrl?: string
-  sourceCheckedAt?: string
-}
-
 export const FIXTURE_PRESETS: FixturePreset[] = [
   {
     id: 'generic-cob-600d',
