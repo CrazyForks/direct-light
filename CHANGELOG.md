@@ -4,6 +4,12 @@
 
 格式参考 [Keep a Changelog](https://keepachangelog.com/)，版本号为产品内部迭代号（非 npm 语义化版本）。
 
+## [未发布] · 修复
+
+> 已在本地落地并通过用户验收，尚未单独发版（仍以 `v1.0.0` 为最新公开发布）。
+
+- 修复自由拖动越界：在画布里自由拖动**灯光 / 相机 / 人物 / 道具**时，落点现在按白棚实际 `width` × `depth` 夹紧（四面封边，含敞开的前方 +Z，留 0.3m 余量），不再沿用写死的 ±20m 范围。此前灯光 / 人物 / 道具完全不受白棚尺寸约束，相机前方也能拖出棚外。白棚尺寸改动后拖动边界实时跟随。新增纯函数 `src/domain/studioBounds.ts` 的 `clampToStudioFootprint`，由 `GroundDragController` 读当前 `studio` 调用。
+
 ## [1.0.0] - 2026-06-24 · 多语言 UI · 首个正式大版本
 
 - 新增 [`V0_10_I18N_SPEC.md`](V0_10_I18N_SPEC.md)，定稿多语言口径：语言是 app preference，不进入场景、保存方案、A/B 或自定义器械数据。

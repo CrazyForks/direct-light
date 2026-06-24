@@ -39,6 +39,7 @@
 - `src/domain/supportSurfaces.ts` 已承载人物放到桌面、椅面、舞台等承载面的高度计算。
 - `src/domain/sceneMigration.ts` 已承载旧方案/旧快照迁移。
 - `src/domain/cameraMath.ts` 已承载摄影机方位角/距离计算、目标跟随和棚内夹紧。
+- `src/domain/studioBounds.ts` 已承载自由拖动落点的白棚足迹夹紧（`clampToStudioFootprint`，按 `width`×`depth` 四面封边），由 `src/scene/GroundDragController.tsx` 读当前 `studio` 调用。
 
 主要问题：
 

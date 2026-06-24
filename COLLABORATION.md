@@ -27,6 +27,10 @@ Current feature line:
 - i18n foundation, v0.10b tier-A core UI extraction, and v0.10.1 built-in display labels + `sceneDiff` localized copy are complete.
 - Released: committed + pushed to `main`, tagged `v1.0.0` (web GitHub Pages + Tauri macOS CI).
 
+Post-1.0.0 fixes (pushed to `main`, not separately tagged — `v1.0.0` stays the latest public release):
+
+- Free-drag bounds: dragging a light / camera / person / prop on the ground now clamps to the live studio footprint (`width` × `depth`, all four sides incl. the open +Z front, 0.3m margin) instead of a hardcoded ±20m. Pure helper `clampToStudioFootprint` in `src/domain/studioBounds.ts`; `GroundDragController` reads the current `studio` from the store. The camera path still also passes through `clampCameraInsideStudio`.
+
 ## v0.10 Status
 
 Specification:

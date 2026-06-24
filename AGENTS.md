@@ -18,6 +18,7 @@ Do not load every historical `V0_*_SPEC.md` by default. Old details live in `doc
 - v0.10 multilingual UI is complete locally and user-accepted on 2026-06-24.
 - i18n foundation, v0.10b tier-A UI extraction, and v0.10.1 built-in display labels + `sceneDiff` localized copy are complete.
 - Release operation is complete: `main` was pushed and `v1.0.0` was tagged/published.
+- Post-1.0.0 fix (pushed, not tagged): free-drag of light/camera/person/prop now clamps to the studio footprint via `src/domain/studioBounds.ts` (`clampToStudioFootprint`), used by `GroundDragController`. `v1.0.0` stays the latest public release.
 - `LIGHT_TYPE_LABELS` and `LIGHT_TARGET_MODE_LABELS` are unused but intentionally retained until a later Codex-approved cleanup.
 
 ## Hard Boundaries

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useStore } from '../state/store'
+import { clampToStudioFootprint } from '../domain/studioBounds'
 
 // Drives drag of the currently grabbed light / person / object by raycasting the
 // pointer onto the ground plane. Window-level listeners keep the drag smooth even
@@ -34,8 +35,10 @@ export function GroundDragController() {
       raycaster.setFromCamera(pointer, camera)
       const point = pointRef.current
       if (!raycaster.ray.intersectPlane(groundRef.current, point)) return
-      const x = THREE.MathUtils.clamp(point.x, -20, 20)
-      const z = THREE.MathUtils.clamp(point.z, -20, 20)
+      // Clamp to the live white-studio footprint so free dragging a light / camera
+      // / person / prop is bounded by the actual box size, not a fixed -20..20.
+      const studio = useStore.getState().scene.studio
+      const { x, z } = clampToStudioFootprint(point.x, point.z, studio)
       if (dragTarget.kind === 'light') setLightPositionXZ(dragTarget.id, x, z)
       else if (dragTarget.kind === 'object') setObjectPositionXZ(dragTarget.id, x, z)
       else if (dragTarget.kind === 'camera') setCameraPositionXZ(x, z)
