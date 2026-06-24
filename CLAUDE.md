@@ -14,10 +14,10 @@ Do not load every historical `V0_*_SPEC.md` by default. Old details live in `doc
 
 ## Current Work
 
-- Released baseline: `v1.0.0` (first stable release — multilingual UI complete; user chose 1.0.0 over 0.10.0).
+- Released baseline: `v1.0.0` (first stable major release — multilingual UI complete; user chose 1.0.0 over 0.10.0).
 - v0.10 multilingual UI is complete locally and user-accepted on 2026-06-24.
 - i18n foundation, v0.10b tier-A UI extraction, and v0.10.1 built-in display labels + `sceneDiff` localized copy are complete.
-- Next release operation: commit/push and tag `v0.10.0` when the user asks.
+- Release operation is complete: `main` was pushed and `v1.0.0` was tagged/published.
 - `LIGHT_TYPE_LABELS` and `LIGHT_TARGET_MODE_LABELS` are unused but intentionally retained until a later Codex-approved cleanup.
 
 ## Hard Boundaries

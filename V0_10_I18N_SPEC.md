@@ -1,6 +1,6 @@
 # V0.10 Multilingual UI Spec
 
-> Status: COMPLETE / USER-ACCEPTED (Claude-led, 2026-06-24). v0.10a foundation, v0.10b core-UI extraction, v0.10.1 built-in display labels + `sceneDiff` copy, and v0.10d closeout are complete. Version metadata is `v0.10.0`; public release waits for the GitHub push/tag. Per-version progress lives in `COLLABORATION.md`.
+> Status: COMPLETE / USER-ACCEPTED / RELEASED (Claude-led, 2026-06-24). v0.10a foundation, v0.10b core-UI extraction, v0.10.1 built-in display labels + `sceneDiff` copy, and v0.10d closeout are complete. The user chose `v1.0.0` as the major milestone release; version metadata is `1.0.0` and the GitHub release/tag is published. Per-version progress lives in `COLLABORATION.md`.
 > Owner split: Codex owns product wording and acceptance rules; Claude Code owns implementation and final integration; OpenRouter may draft mechanical string-extraction patches under Claude review; Hermes may only do narrow scan/copy-table subtasks when explicitly assigned.
 
 ## 1. Product Position
@@ -190,7 +190,7 @@ Scope:
 
 - Verify switching `zh-CN` / `en` / `ja` does not change scene, A/B, presets, custom fixtures, or export/import JSON.
 - Verify key desktop layouts do not overflow in English or Japanese.
-- Update TopBar to `v0.10.0` only after user visual acceptance.
+- Update release/version metadata only after user visual acceptance; this line shipped as `v1.0.0`.
 - Update `README.md`, `README.en.md`, `CHANGELOG.md`, `ROADMAP.md`, `COLLABORATION.md`, `AGENTS.md`, `CLAUDE.md`, and `HERMES.md`.
 
 ## 8. Write Scope
@@ -257,6 +257,7 @@ Before accepting v0.10:
 - Confirm no language field entered custom fixture pack schema.
 - Confirm `TopBar` version only changed during v0.10d closeout.
 - Confirm `package.json` / Tauri / Cargo versions change only if a formal release is being cut.
+- For the final milestone release, confirm all of the above use `1.0.0` / `v1.0.0`, not the earlier working label `0.10.0`.
 
 ## 11. Handoff Guidance
 

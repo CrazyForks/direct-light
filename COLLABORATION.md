@@ -14,7 +14,7 @@ Date: 2026-06-24
 
 Released baseline:
 
-- Latest public release: `v1.0.0` (first stable release — multilingual UI complete).
+- Latest public release: `v1.0.0` (first stable major release — multilingual UI complete).
 - GitHub: https://github.com/oukeming64-tech/direct-light
 - GitHub Pages demo: https://oukeming64-tech.github.io/direct-light/
 - macOS desktop release is published through Tauri CI.
@@ -22,7 +22,7 @@ Released baseline:
 
 Current feature line:
 
-- v0.10 multilingual UI is complete and user-accepted (2026-06-24), released as **`v1.0.0`** — the user chose 1.0.0 (not 0.10.0) for this major milestone.
+- v0.10 multilingual UI is complete and user-accepted (2026-06-24), released as **`v1.0.0`** — the user chose 1.0.0 (not 0.10.0) because this is a major update milestone.
 - All app version metadata is `v1.0.0` / `1.0.0` (TopBar / `package.json` / `tauri.conf.json` / `Cargo.toml` / `Cargo.lock`).
 - i18n foundation, v0.10b tier-A core UI extraction, and v0.10.1 built-in display labels + `sceneDiff` localized copy are complete.
 - Released: committed + pushed to `main`, tagged `v1.0.0` (web GitHub Pages + Tauri macOS CI).
@@ -56,7 +56,7 @@ v0.10.1 — complete and user-accepted:
 
 v0.10 closeout:
 
-- Version metadata is bumped to `v0.10.0` / `0.10.0`.
+- Version metadata is bumped to `v1.0.0` / `1.0.0`.
 - `LIGHT_TYPE_LABELS` in `src/data/rendering.ts` and `LIGHT_TARGET_MODE_LABELS` in `src/domain/lightTargets.ts` are now unused and non-rendered. They are retained for this release because the v0.10.1 write scope did not require mutating those source files; they can be pruned later with Codex approval.
 - Ready for Claude to publish to GitHub.
 
