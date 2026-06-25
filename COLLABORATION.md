@@ -14,7 +14,7 @@ Date: 2026-06-24
 
 Released baseline:
 
-- Latest public release: `v1.0.2` (user-customizable figure models, on top of the `v1.0.1` drag-bounds patch over the `v1.0.0` multilingual major release).
+- Latest public release: `v1.0.3` (shadow light-bleeding fix: per-light normal bias + PCF soft-shadow toggle, on top of the `v1.0.2` figure-models release).
 - GitHub: https://github.com/oukeming64-tech/direct-light
 - GitHub Pages demo: https://oukeming64-tech.github.io/direct-light/
 - macOS desktop release is published through Tauri CI.
@@ -23,7 +23,7 @@ Released baseline:
 Current feature line:
 
 - v0.10 multilingual UI is complete and user-accepted (2026-06-24), released as **`v1.0.0`** — the user chose 1.0.0 (not 0.10.0) because this is a major update milestone.
-- All app version metadata is `v1.0.2` / `1.0.2` (TopBar / `package.json` / `tauri.conf.json` / `Cargo.toml` / `Cargo.lock`); `v1.0.2` adds user-customizable figure models over the `v1.0.1` drag-bounds patch.
+- All app version metadata is `v1.0.3` / `1.0.3` (TopBar / `package.json` / `tauri.conf.json` / `Cargo.toml` / `Cargo.lock`); `v1.0.3` fixes shadow light-bleeding (per-light normal bias + PCF soft-shadow toggle) over the `v1.0.2` figure-models release.
 - i18n foundation, v0.10b tier-A core UI extraction, and v0.10.1 built-in display labels + `sceneDiff` localized copy are complete.
 - Released: committed + pushed to `main`, tagged `v1.0.0` (web GitHub Pages + Tauri macOS CI).
 
@@ -37,6 +37,12 @@ v1.0.2 — user-customizable figure models (PR #1 + Claude follow-up `e16b3aa`; 
 - Claude follow-up `e16b3aa`: default `modelVariant` is `'dummy'` (the procedural rig) everywhere — `Person` dispatch, `buildPersonFromPreset`, `PersonPanel` — so the bundled models are opt-in, not forced. Fixed the `LABEL_OVERRIDES` key that never matched the real bust file id. Dropped the eager `useGLTF.preload`: GLBs now lazy-load on first selection (Suspense falls back to the dummy), so startup no longer fetches multi-MB models nobody asked for. User-accepted 2026-06-25; lint + `tsc -b` + build clean.
 - Note: the two `.glb` files are committed as regular files (not LFS) and bundle into `dist` (van 1.3MB / bust 6.2MB). Kept simple per user; LFS would shrink the repo but not the bundle, and the contributor already reverted an LFS attempt.
 - Released as `v1.0.2` (2026-06-25): all app version metadata bumped to `1.0.2` (TopBar / `package.json` / `tauri.conf.json` / `Cargo.toml` / `Cargo.lock`), tagged `v1.0.2` (web Pages + Tauri macOS CI). Changelog headline: 在博士的建议下添加了更多哲学人物。
+
+v1.0.3 — shadow light-bleeding fix (contributor PR #2 + Claude integration `0a8cc68`; released, tagged `v1.0.3`):
+
+- Contributor [@zczam](https://github.com/zczam) (PR #2) tackled the VSM light-bleeding exposed by the new GLB figures on curved silhouettes. Two knobs: (1) per-light **normal bias** slider (`LightConfig.normalBias?: number`, 0–0.05) wired into `s.shadow.normalBias` in `src/scene/LightRig.tsx`; (2) a global **soft-shadows (PCF)** toggle (`StudioConfig.shadowMode?: 'variance' | 'soft'`) surfaced in `src/ui/StudioPanel.tsx` under a new "Rendering" section, driving the `<Canvas shadows>` prop in `src/scene/StudioScene.tsx`. Both i18n'd across zh/en/ja. `shadowMode` is an optional studio field (defaults to `'variance'`), so old saved scenes/snapshots stay valid.
+- Claude integration `0a8cc68`: the PR passed `vite dev` but failed `npm run lint` (mutating the `useThree()` `gl` return tripped `react-hooks/immutability`) and `tsc -b` (`THREE.Light` base type has no `.shadow`). Slimmed `ShadowModeSync` to do only what R3F's `shadows` prop omits — force shadow-receiving materials to recompile (`material.needsUpdate = true`), since three.js bakes the `SHADOWMAP_TYPE_*` define at material-compile time and `WebGLRenderer.setProgram` never re-derives it on a runtime `shadowMap.type` change. No hook-return mutation, correct typing, single responsibility per piece (R3F = algorithm select, ShadowModeSync = material recompile, LightRig = per-light shadow params). lint + `tsc -b` + build clean.
+- Released as `v1.0.3` (2026-06-25): all app version metadata bumped to `1.0.3`, tagged `v1.0.3` (web Pages + Tauri macOS CI). Changelog headline: 给哲学家们擦掉了身上的漏光。
 
 ## v0.10 Status
 

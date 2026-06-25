@@ -4,6 +4,16 @@
 
 格式参考 [Keep a Changelog](https://keepachangelog.com/)，版本号为产品内部迭代号（非 npm 语义化版本）。
 
+## [1.0.3] - 2026-06-25 · 修复：阴影漏光（法线偏移 + PCF 柔和阴影）
+
+> 通过用户验收并已发布；TopBar / `package.json` / Tauri / Cargo / Cargo.lock 均为 `1.0.3`，tag `v1.0.3`。
+
+- **给哲学家们擦掉了身上的漏光。** 强光 / 直射下，VSM 阴影会在曲面（尤其人像剪影）上渗出一圈漏光（light bleeding），现在可控了。
+- **每盏灯新增「法线偏移」滑杆**（灯光面板，0–0.05）：沿表面法线偏移阴影采样以消除曲面漏光，代价是几乎看不出的阴影角度偏移；强光 / 直射场景最明显。
+- **新增「柔和阴影（PCF）」开关**（白棚面板 → 渲染）：极端布光下 VSM 救不回来时的兜底，彻底消除人像与背景上的漏光，代价是半影不再丝滑、表面略平。默认仍是 VSM + 法线偏移（观感更好）；开 PCF 后法线偏移依然可调。
+- 集成收口（Claude）：运行时切换阴影算法时，强制重编接收阴影的材质——three.js 把 `SHADOWMAP_TYPE_*` 烘在材质 shader 的编译期，只切 `shadowMap.type` 不会让表面改用新算法采样。顺带修掉原 PR 在 `tsc -b` / `eslint` 下的两处报错（`vite dev` 看不出，故贡献者本地未暴露），lint / build 全绿。
+- 再次特别感谢斯坦福的 Dr. Zhang（[@zczam](https://github.com/zczam)，PR #2）——上次是请来哲学人物，这次是给白棚除漏光。
+
 ## [1.0.2] - 2026-06-25 · 用户自定义人像模型 + 更多哲学人物
 
 > 通过用户验收并已发布；TopBar / `package.json` / Tauri / Cargo / Cargo.lock 均为 `1.0.2`，tag `v1.0.2`。

@@ -28,6 +28,7 @@ A/B 对比已经在 v0.1.2 完成，后续需求默认都要能被 A/B 对比验
 社区贡献（路线图外）：
 
 - ~~用户自定义人像模型（导入 `.glb`）。~~ ✅ 已作为 **`v1.0.2`** 发布（贡献者 PR #1 [@zczam](https://github.com/zczam) + Claude 收口 commit `e16b3aa`），用户验收通过 2026-06-25，已打 tag `v1.0.2`。详见 `CHANGELOG.md` `[1.0.2]` 段与 `COLLABORATION.md`。
+- ~~修复阴影漏光（法线偏移 + PCF 柔和阴影）。~~ ✅ 已作为 **`v1.0.3`** 发布（贡献者 PR #2 [@zczam](https://github.com/zczam) + Claude 集成收口 commit `0a8cc68`），用户验收通过 2026-06-25，已打 tag `v1.0.3`。详见 `CHANGELOG.md` `[1.0.3]` 段与 `COLLABORATION.md`。
 
 原因：
 
