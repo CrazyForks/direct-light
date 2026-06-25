@@ -18,21 +18,23 @@ import { GroundDragController } from './GroundDragController'
 import { CameraGizmo } from './CameraGizmo'
 import { DistanceLabel } from './DistanceLabel'
 
-// Applies the shadow map algorithm at runtime and flushes cached maps on change.
-// Must live inside <Canvas> so it can access the R3F renderer via useThree.
+// Recompiles shadow-receiving materials when the shadow algorithm changes.
+// The <Canvas shadows> prop already switches gl.shadowMap.type (VSM <-> PCFSoft)
+// and flags the shadow maps for re-render, but three.js bakes the SHADOWMAP_TYPE_*
+// define into each material's shader at compile time and never re-derives it on a
+// type change (see WebGLRenderer.setProgram's needsProgramChange list). Without a
+// forced recompile the surfaces keep sampling with the old algorithm. Must live
+// inside <Canvas> to reach the scene graph via useThree.
 function ShadowModeSync({ mode }: { mode: ShadowMode }) {
-  const { gl, scene } = useThree()
+  const scene = useThree((s) => s.scene)
   useEffect(() => {
-    gl.shadowMap.type = mode === 'soft' ? THREE.PCFSoftShadowMap : THREE.VSMShadowMap
     scene.traverse((obj) => {
-      const light = obj as THREE.Light
-      if (light.isLight && light.shadow?.map) {
-        light.shadow.map.dispose()
-        ;(light.shadow as { map: THREE.WebGLRenderTarget | null }).map = null
-      }
+      const mesh = obj as THREE.Mesh
+      if (!mesh.material) return
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+      for (const m of mats) m.needsUpdate = true
     })
-    gl.shadowMap.needsUpdate = true
-  }, [mode, gl, scene])
+  }, [mode, scene])
   return null
 }
 
