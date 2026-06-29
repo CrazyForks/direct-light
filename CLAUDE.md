@@ -49,6 +49,7 @@ Do not load every historical `V0_*_SPEC.md` by default. Old details live in `doc
 - OpenRouter is not Hermes.
 - Hermes is separate and user-relayed. Use `HERMES.md` only when preparing or reviewing an explicit Hermes handoff.
 - A Direct Light feature is not done if current docs still describe it as next, unfinished, or not accepted.
+- Every repository modification must update the relevant docs before completion. The doc update must explicitly say what changed and what did not change, so future handoffs do not infer scope from code alone.
 - Human verifies small pose/rig visual tweaks; run deterministic checks, then hand them to the user.
 - User visual acceptance is authoritative for visual/product feel.
 

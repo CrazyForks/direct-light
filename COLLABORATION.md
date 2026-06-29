@@ -22,6 +22,11 @@ Released baseline:
 - macOS desktop release is published through Tauri CI.
 - `src-tauri/Cargo.lock` is committed. Do not re-add inline `time` pins or `cargo generate-lockfile` steps to `release.yml`; refresh the lock with `.github/workflows/lockfile.yml` when needed.
 
+Latest documentation discipline update (2026-06-29):
+
+- Changed: added a hard working agreement that every repository modification must update relevant docs with explicit "changed" and "not changed" scope.
+- Not changed: no product/runtime behavior, main app code, showcase code, build config, package metadata, release version, or deployment workflow changed in this update.
+
 Current feature line:
 
 - v0.10 multilingual UI is complete and user-accepted (2026-06-24), released as **`v1.0.0`** — the user chose 1.0.0 (not 0.10.0) because this is a major update milestone.
@@ -108,6 +113,7 @@ Do not reopen these unless fixing a concrete regression:
 - OpenRouter is Claude Code's code-drafting path, not Hermes. Claude reviews and integrates OpenRouter drafts.
 - Hermes is a separate user-relayed agent. Use `HERMES.md` only when writing or reviewing a Hermes handoff.
 - For Direct Light handoffs, docs and code must agree before a feature is considered done.
+- For every repository modification, update relevant docs before completion and explicitly record what changed and what did not change.
 - Human verifies small pose/rig visual tweaks; do not spend time driving the R3F preview for those.
 - User visual acceptance is authoritative for visual/product feel.
 
