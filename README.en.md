@@ -14,6 +14,8 @@
 - 🌐 Live demo: <https://oukeming64-tech.github.io/direct-light/> — no install, works on mobile too, auto-updated on every push to `main`.
 - 🖥️ macOS desktop: the `.dmg` on [Releases](https://github.com/oukeming64-tech/direct-light/releases/latest) (universal Apple Silicon / Intel).
 
+> Found lighting, shadow, or interaction behavior that does not look right? [Report a bug or visual issue](https://github.com/oukeming64-tech/direct-light/issues/new/choose). To share a lighting setup, a real production workflow, or an early idea, start a thread in [Discussions](https://github.com/oukeming64-tech/direct-light/discussions) — no code required.
+
 A frontend-only web app, no backend. It optimizes for **communication, real-time feedback, and readability** — not physically accurate rendering. Unlike heavyweight 3D / paid set-lighting software, it's instant, install-free, and built for talking through a lighting setup with your crew during prep.
 
 ![Direct Light demo: adjust the camera position, then switch to the through-lens view and watch the framing and lighting update live](docs/media/hero.gif)
@@ -94,6 +96,16 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) (Chinese) for full module boundaries, a
 - Custom fixtures live in localStorage only — moving them across devices / sharing is via JSON export / import.
 - Desktop-first; a narrow-mobile responsive layout is scheduled separately.
 - The renderer is a communication-oriented approximation, not a physically accurate simulation: studio reflectance, soft light, colored spill, and gear optics all favor readable, stable, real-time output.
+
+## Contributing
+
+Direct Light welcomes directors, DPs, gaffers, 3D / Web developers, and anyone curious about lighting. You can:
+
+- Reproduce a problem in the live demo, then use an [Issue form](https://github.com/oukeming64-tech/direct-light/issues/new/choose) with steps, screenshots, or a recording.
+- Share lighting setups, real production needs, and early ideas in [Discussions](https://github.com/oukeming64-tech/direct-light/discussions).
+- Browse [open Issues](https://github.com/oukeming64-tech/direct-light/issues), pick work with an agreed scope, and follow [`CONTRIBUTING.md`](CONTRIBUTING.md) for a PR.
+
+Roadmap candidates are not pre-approved features. For larger changes, open an Issue or Discussion first so the problem and scope can be agreed; small, focused bug fixes may go straight to a PR.
 
 ## Documentation map
 

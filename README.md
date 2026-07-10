@@ -14,6 +14,8 @@
 - 🌐 在线 demo：<https://oukeming64-tech.github.io/direct-light/> —— 免安装、手机也能开，随 `main` 自动更新。
 - 🖥️ macOS 桌面版：[Releases](https://github.com/oukeming64-tech/direct-light/releases/latest) 的 `.dmg`（Apple Silicon / Intel 通用）。
 
+> 发现灯光、阴影或交互不符合预期？欢迎[提交问题或视觉反馈](https://github.com/oukeming64-tech/direct-light/issues/new/choose)。有布光方案、片场工作流或还不成熟的想法，也欢迎到 [Discussions](https://github.com/oukeming64-tech/direct-light/discussions) 交流；不需要会写代码。
+
 纯前端 Web 应用，无后端依赖。强调**沟通向、实时、可读**，而不是物理级精确渲染——区别于重型 3D / 付费布光软件，它即开即用、专为前期和团队沟通灯光方案而做。
 
 ![Direct Light 演示：调整摄影机机位后切到「镜头」视角，画面与光影实时变化](docs/media/hero.gif)
@@ -94,6 +96,16 @@ Vite · React 19 · TypeScript · React Three Fiber + drei（Three.js）· Zusta
 - 自定义灯具器械只存本地 localStorage，跨设备 / 分享需用「导出 / 导入」手动搬运。
 - 桌面 / 工作台体验优先；移动端窄屏响应式后续单独排期。
 - 渲染是导演沟通向近似，不是物理准确模拟：白棚反射、柔光、彩色溢光和控光器材光学都以可读、稳定、实时为先。
+
+## 参与项目
+
+Direct Light 欢迎导演、摄影指导、灯光师、3D / Web 开发者以及只是对布光好奇的人参与。你可以：
+
+- 在在线 demo 里复现问题，通过 [Issue 表单](https://github.com/oukeming64-tech/direct-light/issues/new/choose)附上步骤、截图或录屏。
+- 在 [Discussions](https://github.com/oukeming64-tech/direct-light/discussions) 分享布光方案、真实片场需求和仍需讨论的想法。
+- 查看[开放中的 Issues](https://github.com/oukeming64-tech/direct-light/issues)，选择已经说明范围的工作，再按 [`CONTRIBUTING.md`](CONTRIBUTING.md) 提交 PR。
+
+路线图里的候选方向不等于已经决定的功能。较大的改动请先开 Issue 或 Discussion 对齐问题与范围；小而明确的 bug 修复可以直接提交 PR。
 
 ## 文档地图
 

@@ -4,6 +4,14 @@
 
 > English summary at the bottom.
 
+## 不写代码也可以参与
+
+- 灯光、阴影、相机或交互看起来不对：通过 [Issue 表单](https://github.com/oukeming64-tech/direct-light/issues/new/choose)提交复现步骤，视觉问题尽量附截图或录屏。
+- 想分享布光方案、真实片场需求，或者想法还需要讨论：到 [Discussions](https://github.com/oukeming64-tech/direct-light/discussions) 开一个话题。
+- 想贡献代码：先查看[开放中的 Issues](https://github.com/oukeming64-tech/direct-light/issues)。较大的功能请先讨论范围；小而明确的 bug 修复可以直接提交 PR。
+
+路线图描述的是值得探索的方向，不代表每个方向都已经决定实现。维护者会优先接收能改善导演沟通效率、并且可以通过可见结果验证的改动。
+
 ## 环境要求
 
 - Node.js **>= 20.19**（推荐 20 LTS 或 22 LTS）
@@ -26,7 +34,7 @@ npm run lint       # eslint .
 npm run preview    # 本地预览已构建的产物
 ```
 
-桌面版（Tauri，可选，需 [Rust](https://www.rust-lang.org/tools/install) 工具链 + Xcode CLT）：`npm run tauri dev` 实时调试、`npm run tauri build` 出 `.app`/`.dmg`。代码在 `src-tauri/`，发版 CI 见 `.github/workflows/release.yml`，细节见 README「桌面版（macOS）」。Rust 依赖由提交的 `src-tauri/Cargo.lock` 锁定以保证构建可复现（避免上游 patch 漂移导致 CI 失败）；需要刷新锁文件时手动运行 Actions 里的「Update Cargo.lock」工作流（`.github/workflows/lockfile.yml`），不要在 `release.yml` 里临时 `cargo generate-lockfile`。
+桌面版（Tauri，可选，需 [Rust](https://www.rust-lang.org/tools/install) 工具链 + Xcode CLT）：`npm run tauri dev` 实时调试、`npm run tauri build` 出 `.app`/`.dmg`。代码在 `src-tauri/`，发版 CI 见 `.github/workflows/release.yml`；当前公开安装包见 README 顶部的 Releases 链接。Rust 依赖由提交的 `src-tauri/Cargo.lock` 锁定以保证构建可复现（避免上游 patch 漂移导致 CI 失败）；需要刷新锁文件时手动运行 Actions 里的「Update Cargo.lock」工作流（`.github/workflows/lockfile.yml`），不要在 `release.yml` 里临时 `cargo generate-lockfile`。
 
 提交前请确保三件事都通过：**`npx tsc -b` · `npm run lint` · `npm run build`**。
 
@@ -56,7 +64,7 @@ npm run preview    # 本地预览已构建的产物
 ## 提交约定
 
 - 一次提交聚焦一件事；信息写清「做了什么 + 为什么」。
-- 涉及产品行为/视觉的改动，请说明如何在 A/B 对比里被看到（参考 `ROADMAP.md §11`）。
+- 涉及产品行为/视觉的改动，请说明如何在截图、录屏或应用内 A/B 对比里看到变化。
 - 改了功能、修了重要 bug 或改变实现方向，请同步更新 [`COLLABORATION.md`](COLLABORATION.md) 的版本记录。
 
 ## 当前已知限制（第一版）
@@ -75,6 +83,8 @@ npm run preview    # 本地预览已构建的产物
 
 Direct Light is a white-studio lighting previz sandbox. To contribute:
 
+- No code required: use the [Issue forms](https://github.com/oukeming64-tech/direct-light/issues/new/choose) for reproducible bugs or visual feedback, and [Discussions](https://github.com/oukeming64-tech/direct-light/discussions) for lighting setups, production workflows, questions, and early ideas.
+- For code contributions, check [open Issues](https://github.com/oukeming64-tech/direct-light/issues). Discuss larger changes before implementation; small, focused bug fixes may go straight to a PR.
 - Requires **Node.js >= 20.19**.
 - `npm install` → `npm run dev` (Vite dev server on `:5173`).
 - Before any PR, make sure **`npx tsc -b`**, **`npm run lint`**, and **`npm run build`** all pass.

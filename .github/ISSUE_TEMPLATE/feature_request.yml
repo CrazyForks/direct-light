@@ -1,0 +1,58 @@
+name: 工作流建议 / Workflow idea
+description: 从真实布光或沟通需求出发提出改进 / Propose an improvement grounded in a real workflow
+title: "[Idea] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先描述问题和使用场景，不必预先设计完整方案。仍需探索的想法也可以先放到 Discussions。
+        Start with the problem and workflow; you do not need to design the full solution. Early ideas can begin in Discussions.
+
+  - type: textarea
+    id: workflow
+    attributes:
+      label: 真实场景 / Real workflow
+      description: 谁在什么情况下使用 Direct Light？现在卡在哪里？
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 希望得到什么结果 / Desired outcome
+      description: 描述完成任务后应该发生什么，而不只是列出一个按钮或功能名。
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: 目前如何处理 / Current workaround
+      description: 如果现在有替代方法，请说明它为什么不够好。
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 截图、示例或参考 / Screenshots, examples, or references
+
+  - type: dropdown
+    id: participation
+    attributes:
+      label: 你愿意如何参与 / How would you like to help?
+      options:
+        - 提供更多使用反馈 / Provide more workflow feedback
+        - 帮助测试 / Help test
+        - 尝试提交代码 / Try a code contribution
+        - 先提出想法 / Idea only for now
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认 / Before submitting
+      options:
+        - label: 我已搜索现有 Issues 和 Discussions。 / I searched existing Issues and Discussions.
+          required: true

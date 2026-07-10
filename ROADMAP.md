@@ -29,12 +29,14 @@ The most important behavior remains:
 
 ## Next Candidate Work
 
-Not committed until explicitly picked:
+These are invitation areas for real-use feedback and scoped proposals, not pre-approved features:
 
 - More realistic fixture / photometric data.
 - Mobile/narrow-screen workflow improvements for the app.
 - More export/share flows for communicating lighting plans.
 - Continued rendering polish when it fixes a concrete visual regression.
+
+Use [Discussions](https://github.com/oukeming64-tech/direct-light/discussions) to share workflow context or explore an early idea. Use [Issues](https://github.com/oukeming64-tech/direct-light/issues) for reproducible problems and proposals with a concrete scope. A roadmap candidate becomes implementation work only after that scope is agreed.
 
 ## Completed Lines
 
@@ -53,5 +55,7 @@ Do not reopen unless fixing a concrete regression:
 ## Documentation Note
 
 Changed in the 2026-06-29 cleanup: this root roadmap was shortened to current state and next candidates.
+
+Changed on 2026-07-10: candidate work now links to public feedback and contribution entry points, while remaining explicitly uncommitted until scoped.
 
 Not changed: product priorities, released version status, app code, build behavior, and release workflow.
