@@ -2,7 +2,14 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Line } from '@react-three/drei'
 import type { ThreeEvent } from '@react-three/fiber'
-import type { LightConfig, PersonConfig, SceneObjectConfig, StudioConfig, Vector3 } from '../types'
+import type {
+  CustomFixturePreset,
+  LightConfig,
+  PersonConfig,
+  SceneObjectConfig,
+  StudioConfig,
+  Vector3,
+} from '../types'
 import {
   LIGHT_TYPE_DEFAULTS,
   getPenumbra,
@@ -17,7 +24,7 @@ import {
   getGearLightOptics,
   getReflectorFillLights,
 } from '../domain/controlGearOptics'
-import { FIXTURE_PRESETS } from '../data/fixturePresets'
+import { findFixtureById } from '../domain/customFixtures'
 import { SPOT_INTENSITY_SCALE, computeGlobalFill } from './lighting'
 import { LightVisual, lightVisualKind } from './LightVisual'
 import { LightModifierVisual } from './LightModifierVisual'
@@ -64,13 +71,23 @@ type LightProps = {
   light: LightConfig
   target: Vector3
   objects: SceneObjectConfig[]
+  customFixtures: CustomFixturePreset[]
   selected: boolean
   showGizmo: boolean
   onSelect: (e: ThreeEvent<MouseEvent>) => void
   onPointerDownGizmo: (e: ThreeEvent<PointerEvent>) => void
 }
 
-function StudioLight({ light, target, objects, selected, showGizmo, onSelect, onPointerDownGizmo }: LightProps) {
+function StudioLight({
+  light,
+  target,
+  objects,
+  customFixtures,
+  selected,
+  showGizmo,
+  onSelect,
+  onPointerDownGizmo,
+}: LightProps) {
   const spotRef = useRef<THREE.SpotLight>(null)
   const targetRef = useRef<THREE.Group>(null)
 
@@ -94,9 +111,7 @@ function StudioLight({ light, target, objects, selected, showGizmo, onSelect, on
   // v0.5.1: pick a visible light body from the light type + its fixture category.
   // 'point' lights keep the existing sphere gizmo (avoids a double-sphere); only
   // softbox/panel/tube draw an extra emissive body.
-  const fixtureCategory = light.fixturePresetId
-    ? FIXTURE_PRESETS.find((f) => f.id === light.fixturePresetId)?.category
-    : undefined
+  const fixtureCategory = findFixtureById(light.fixturePresetId, customFixtures)?.category
   const visualKind = lightVisualKind(light.type, fixtureCategory)
   // v0.6b: the attached control modifier draws its own body in front of the head.
   const modifierVisualKind = getLightModifierPreset(light.modifierId)?.visualKind ?? 'none'
@@ -105,7 +120,15 @@ function StudioLight({ light, target, objects, selected, showGizmo, onSelect, on
     const s = spotRef.current
     if (!s || !targetRef.current) return
     s.target = targetRef.current
-    s.shadow.mapSize.set(typeDef.shadowMapSize, typeDef.shadowMapSize)
+    const mapSizeChanged =
+      s.shadow.mapSize.x !== typeDef.shadowMapSize || s.shadow.mapSize.y !== typeDef.shadowMapSize
+    if (mapSizeChanged) {
+      s.shadow.mapSize.set(typeDef.shadowMapSize, typeDef.shadowMapSize)
+      // Resolution is baked into the render target; rebuild only when that
+      // resolution changes, not for every softness/distance slider tick.
+      s.shadow.map?.dispose()
+      s.shadow.map = null as unknown as THREE.WebGLRenderTarget
+    }
     s.shadow.radius = getShadowRadius(effective.softness)
     s.shadow.blurSamples = Math.round(8 + effective.softness * 24)
     s.shadow.bias = getShadowBias(effective.softness)
@@ -113,9 +136,6 @@ function StudioLight({ light, target, objects, selected, showGizmo, onSelect, on
     s.shadow.camera.near = 0.4
     s.shadow.camera.far = Math.max(24, effective.distance + 14)
     s.shadow.camera.updateProjectionMatrix()
-    // Force the shadow map to rebuild when the resolution changes.
-    s.shadow.map?.dispose()
-    s.shadow.map = null as unknown as THREE.WebGLRenderTarget
   }, [light.enabled, effective.softness, effective.distance, typeDef.shadowMapSize, light.normalBias])
 
   const pos: [number, number, number] = [light.position.x, light.position.y, light.position.z]
@@ -195,13 +215,23 @@ type RigProps = {
   lights: LightConfig[]
   people: PersonConfig[]
   objects: SceneObjectConfig[]
+  customFixtures: CustomFixturePreset[]
   selectedId: string | null
   showGizmos: boolean
   onSelect: (id: string) => void
   onPointerDownLight: (id: string, e: ThreeEvent<PointerEvent>) => void
 }
 
-export function LightRig({ lights, people, objects, selectedId, showGizmos, onSelect, onPointerDownLight }: RigProps) {
+export function LightRig({
+  lights,
+  people,
+  objects,
+  customFixtures,
+  selectedId,
+  showGizmos,
+  onSelect,
+  onPointerDownLight,
+}: RigProps) {
   // v0.6d: reflector boards become runtime virtual fill lights derived from the
   // scene — never written into scene.lights, never count toward MAX_LIGHTS, no
   // shadow. intensity from the helper is the raw appIntensity (0..0.38); the
@@ -221,6 +251,7 @@ export function LightRig({ lights, people, objects, selectedId, showGizmos, onSe
             light={light}
             target={target}
             objects={objects}
+            customFixtures={customFixtures}
             selected={selectedId === light.id}
             showGizmo={showGizmos}
             onSelect={(e) => {

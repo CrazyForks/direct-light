@@ -48,6 +48,7 @@ type SceneContentsProps = {
 function SceneContents({ scene, view, interactive, registerCapture }: SceneContentsProps) {
   const selection = useStore((s) => s.selection)
   const dragTarget = useStore((s) => s.dragTarget)
+  const customFixtures = useStore((s) => s.customFixtures)
   const select = useStore((s) => s.select)
   const setDragTarget = useStore((s) => s.setDragTarget)
 
@@ -155,6 +156,7 @@ function SceneContents({ scene, view, interactive, registerCapture }: SceneConte
         lights={scene.lights}
         people={scene.people}
         objects={scene.objects}
+        customFixtures={customFixtures}
         selectedId={selectedLightId}
         showGizmos={showGizmos}
         onSelect={(id) => interactive && select({ kind: 'light', id })}
@@ -315,7 +317,8 @@ export function StudioScene({
     <Canvas
       shadows={scene.studio.shadowMode === 'soft' ? 'soft' : 'variance'}
       dpr={[1, 2]}
-      gl={{ preserveDrawingBuffer: true, antialias: true }}
+      frameloop={registerCapture ? 'always' : 'demand'}
+      gl={{ preserveDrawingBuffer: registerCapture, antialias: true }}
       onCreated={({ gl }) => {
         gl.toneMappingExposure = RENDERER_SETTINGS.toneMappingExposure
       }}

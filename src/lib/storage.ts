@@ -1,5 +1,5 @@
-// LocalStorage persistence for saved lighting presets, custom fixtures, and the
-// selected UI language.
+// LocalStorage persistence for saved lighting presets, custom fixtures, app
+// preferences, and first-run guidance.
 
 import type { CustomFixturePreset, LightingPreset } from '../types'
 import { DEFAULT_LANGUAGE, isAppLanguage, type AppLanguage } from '../i18n/languages'
@@ -8,6 +8,9 @@ const PRESETS_KEY = 'direct-light.presets.v1'
 const CUSTOM_FIXTURES_KEY = 'direct-light.customFixtures.v1'
 // v0.10: app language preference, kept independent from scenes and fixtures.
 const LANGUAGE_KEY = 'direct-light.language.v1'
+const ONBOARDING_KEY = 'direct-light.onboarding.v1'
+
+export type OnboardingStatus = 'completed' | 'skipped'
 
 export function loadPresets(): LightingPreset[] {
   try {
@@ -20,11 +23,12 @@ export function loadPresets(): LightingPreset[] {
   }
 }
 
-export function savePresets(presets: LightingPreset[]): void {
+export function savePresets(presets: LightingPreset[]): boolean {
   try {
     localStorage.setItem(PRESETS_KEY, JSON.stringify(presets))
+    return true
   } catch {
-    // Quota or serialization issues are non-fatal for the prototype.
+    return false
   }
 }
 
@@ -41,11 +45,12 @@ export function loadCustomFixtures(): CustomFixturePreset[] {
   }
 }
 
-export function saveCustomFixtures(fixtures: CustomFixturePreset[]): void {
+export function saveCustomFixtures(fixtures: CustomFixturePreset[]): boolean {
   try {
     localStorage.setItem(CUSTOM_FIXTURES_KEY, JSON.stringify(fixtures))
+    return true
   } catch {
-    // Quota or serialization issues are non-fatal for the prototype.
+    return false
   }
 }
 
@@ -60,11 +65,33 @@ export function loadLanguage(): AppLanguage {
   }
 }
 
-export function saveLanguage(language: AppLanguage): void {
+export function saveLanguage(language: AppLanguage): boolean {
   try {
     localStorage.setItem(LANGUAGE_KEY, language)
+    return true
   } catch {
-    // Quota or serialization issues are non-fatal for the prototype.
+    return false
+  }
+}
+
+// Onboarding is an app preference only. It never enters scene data, presets,
+// A/B snapshots, or custom-fixture packs.
+export function loadOnboardingStatus(): OnboardingStatus | null {
+  try {
+    const raw = localStorage.getItem(ONBOARDING_KEY)
+    return raw === 'completed' || raw === 'skipped' ? raw : null
+  } catch {
+    return null
+  }
+}
+
+export function saveOnboardingStatus(status: OnboardingStatus): boolean {
+  try {
+    localStorage.setItem(ONBOARDING_KEY, status)
+    return true
+  } catch {
+    // A blocked preference write only means the guide may reappear next time.
+    return false
   }
 }
 

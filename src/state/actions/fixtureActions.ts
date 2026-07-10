@@ -14,7 +14,7 @@ export function createFixtureActions(
     saveCurrentLightAsFixture: (lightId, name) => {
       const s = get()
       const light = s.scene.lights.find((l) => l.id === lightId)
-      if (!light) return
+      if (!light) return false
       // Carry over real-world metadata when this light already came from a fixture.
       const baseFixture = findFixtureById(light.fixturePresetId, s.customFixtures)
       const fixture = buildCustomFixtureFromLight(light, {
@@ -24,7 +24,7 @@ export function createFixtureActions(
         baseFixture,
       })
       const customFixtures = [...s.customFixtures, fixture]
-      saveCustomFixtures(customFixtures)
+      if (!saveCustomFixtures(customFixtures)) return false
       // Point the saved light at the new fixture (params already match, so this
       // only sets the marker).
       set({
@@ -34,24 +34,27 @@ export function createFixtureActions(
           lights: mapLights(s.scene.lights, lightId, (l) => ({ ...l, fixturePresetId: fixture.id })),
         },
       })
+      return true
     },
 
-    removeCustomFixture: (fixtureId) =>
-      set((s) => {
-        const customFixtures = s.customFixtures.filter((f) => f.id !== fixtureId)
-        if (customFixtures.length === s.customFixtures.length) return s // unknown id → no-op
-        saveCustomFixtures(customFixtures)
-        return {
-          customFixtures,
-          scene: {
-            ...s.scene,
-            // Clear the soft marker on referencing lights; keep their raw params.
-            lights: s.scene.lights.map((l) =>
-              l.fixturePresetId === fixtureId ? { ...l, fixturePresetId: undefined } : l,
-            ),
-          },
-        }
-      }),
+    removeCustomFixture: (fixtureId) => {
+      const s = get()
+      const customFixtures = s.customFixtures.filter((fixture) => fixture.id !== fixtureId)
+      if (customFixtures.length === s.customFixtures.length || !saveCustomFixtures(customFixtures)) {
+        return false
+      }
+      set({
+        customFixtures,
+        scene: {
+          ...s.scene,
+          // Clear the soft marker on referencing lights; keep their raw params.
+          lights: s.scene.lights.map((light) =>
+            light.fixturePresetId === fixtureId ? { ...light, fixturePresetId: undefined } : light,
+          ),
+        },
+      })
+      return true
+    },
 
     importCustomFixtures: (text) => {
       const s = get()
@@ -59,10 +62,17 @@ export function createFixtureActions(
       const res = parseCustomFixturePack(text, { now: Date.now(), takenIds })
       if (res.fixtures.length > 0) {
         const customFixtures = [...s.customFixtures, ...res.fixtures]
-        saveCustomFixtures(customFixtures)
+        if (!saveCustomFixtures(customFixtures)) {
+          return { added: 0, errors: res.errors, warnings: res.warnings, persisted: false }
+        }
         set({ customFixtures })
       }
-      return { added: res.fixtures.length, errors: res.errors, warnings: res.warnings }
+      return {
+        added: res.fixtures.length,
+        errors: res.errors,
+        warnings: res.warnings,
+        persisted: true,
+      }
     },
 
     exportCustomFixtures: () => serializeCustomFixturePack(get().customFixtures, { now: Date.now() }),

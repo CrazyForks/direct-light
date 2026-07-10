@@ -1,4 +1,4 @@
-import type { PoseConfig, SceneConfig, SceneObjectSize } from '../types'
+import type { LightConfig, PersonConfig, PoseConfig, SceneConfig } from '../types'
 import { isControlGearKind } from '../data/sceneObjects'
 import { t, type AppLanguage } from '../i18n'
 import { getPosePresetLabel } from '../i18n/display'
@@ -43,20 +43,7 @@ function diffLights(a: SceneConfig, b: SceneConfig, language: AppLanguage): Cate
   const aOn = a.lights.filter((l) => l.enabled).length
   const bOn = b.lights.filter((l) => l.enabled).length
   const same =
-    a.lights.length === b.lights.length &&
-    a.lights.every((la, i) => {
-      const lb = b.lights[i]
-      if (!lb) return false
-      return (
-        la.type === lb.type &&
-        Math.abs(la.intensity - lb.intensity) < 0.01 &&
-        la.color === lb.color &&
-        la.enabled === lb.enabled &&
-        closeVec(la.position, lb.position) &&
-        Math.abs(la.softness - lb.softness) < 0.01 &&
-        (la.modifierId ?? '') === (lb.modifierId ?? '')
-      )
-    })
+    sameById(a.lights, b.lights, sameLight)
   const hint = same
     ? t(language, 'sceneDiff.lights.same')
     : aOn === bOn && a.lights.length === b.lights.length
@@ -67,12 +54,7 @@ function diffLights(a: SceneConfig, b: SceneConfig, language: AppLanguage): Cate
 
 function diffPeople(a: SceneConfig, b: SceneConfig, language: AppLanguage): CategoryDiff {
   const same =
-    a.people.length === b.people.length &&
-    a.people.every((pa, i) => {
-      const pb = b.people[i]
-      if (!pb) return false
-      return closeVec(pa.position, pb.position) && Math.abs(pa.rotationY - pb.rotationY) < 0.01
-    })
+    sameById(a.people, b.people, samePersonWithoutPose)
   const hint = same
     ? t(language, 'sceneDiff.people.same', { count: a.people.length })
     : a.people.length === b.people.length
@@ -86,16 +68,7 @@ function diffObjects(a: SceneConfig, b: SceneConfig, language: AppLanguage): Cat
   const ao = a.objects.filter((o) => !isControlGearKind(o.kind))
   const bo = b.objects.filter((o) => !isControlGearKind(o.kind))
   const same =
-    ao.length === bo.length &&
-    ao.every((oa, i) => {
-      const ob = bo[i]
-      if (!ob) return false
-      return (
-        oa.kind === ob.kind &&
-        closeVec(oa.position, ob.position) &&
-        Math.abs(oa.rotationY - ob.rotationY) < 0.01
-      )
-    })
+    sameById(ao, bo, sameValue)
   const hint = same
     ? t(language, 'sceneDiff.objects.same', { count: ao.length })
     : ao.length === bo.length
@@ -111,18 +84,7 @@ function diffGear(a: SceneConfig, b: SceneConfig, language: AppLanguage): Catego
   const ag = a.objects.filter((o) => isControlGearKind(o.kind))
   const bg = b.objects.filter((o) => isControlGearKind(o.kind))
   const same =
-    ag.length === bg.length &&
-    ag.every((oa, i) => {
-      const ob = bg[i]
-      if (!ob) return false
-      return (
-        oa.kind === ob.kind &&
-        oa.visible === ob.visible &&
-        closeVec(oa.position, ob.position) &&
-        Math.abs(oa.rotationY - ob.rotationY) < 0.01 &&
-        closeSize(oa.size, ob.size)
-      )
-    })
+    sameById(ag, bg, sameValue)
   const hint = same
     ? t(language, 'sceneDiff.gear.same', { count: ag.length })
     : ag.length === bg.length
@@ -133,12 +95,7 @@ function diffGear(a: SceneConfig, b: SceneConfig, language: AppLanguage): Catego
 
 function diffPose(a: SceneConfig, b: SceneConfig, language: AppLanguage): CategoryDiff {
   const same =
-    a.people.length === b.people.length &&
-    a.people.every((pa, i) => {
-      const pb = b.people[i]
-      if (!pb) return false
-      return samePose(pa.pose, pb.pose)
-    })
+    sameById(a.people, b.people, (pa, pb) => samePose(pa.pose, pb.pose))
   const hint = same
     ? t(language, 'sceneDiff.pose.same')
     : t(language, 'sceneDiff.pose.changed', {
@@ -149,19 +106,15 @@ function diffPose(a: SceneConfig, b: SceneConfig, language: AppLanguage): Catego
 }
 
 function diffCamera(a: SceneConfig, b: SceneConfig, language: AppLanguage): CategoryDiff {
-  const aTargetMode = a.camera.targetMode ?? 'manual'
-  const bTargetMode = b.camera.targetMode ?? 'manual'
-  const sameLockedPerson =
-    aTargetMode === 'person' && bTargetMode === 'person'
-      ? a.camera.targetPersonId === b.camera.targetPersonId
-      : true
-  const same =
-    a.camera.aspectRatio === b.camera.aspectRatio &&
-    a.camera.focalLength === b.camera.focalLength &&
-    aTargetMode === bTargetMode &&
-    sameLockedPerson &&
-    closeVec(a.camera.position, b.camera.position) &&
-    closeVec(a.camera.target, b.camera.target)
+  const normalizeCamera = (scene: SceneConfig) => {
+    const mode = scene.camera.targetMode ?? 'manual'
+    return {
+      ...scene.camera,
+      targetMode: mode,
+      targetPersonId: mode === 'person' ? scene.camera.targetPersonId : undefined,
+    }
+  }
+  const same = sameValue(normalizeCamera(a), normalizeCamera(b))
   const hint = same
     ? t(language, 'sceneDiff.camera.same')
     : t(language, 'sceneDiff.camera.changed', { aFocal: a.camera.focalLength, bFocal: b.camera.focalLength })
@@ -169,10 +122,10 @@ function diffCamera(a: SceneConfig, b: SceneConfig, language: AppLanguage): Cate
 }
 
 function diffStudio(a: SceneConfig, b: SceneConfig, language: AppLanguage): CategoryDiff {
-  const same =
-    a.studio.wallReflectance === b.studio.wallReflectance &&
-    a.studio.floorReflectance === b.studio.floorReflectance &&
-    a.studio.ambientLevel === b.studio.ambientLevel
+  const same = sameValue(
+    { ...a.studio, shadowMode: a.studio.shadowMode ?? 'variance' },
+    { ...b.studio, shadowMode: b.studio.shadowMode ?? 'variance' },
+  )
   const hint = same
     ? t(language, 'sceneDiff.studio.same')
     : t(language, 'sceneDiff.studio.changed', {
@@ -184,48 +137,60 @@ function diffStudio(a: SceneConfig, b: SceneConfig, language: AppLanguage): Cate
 
 // ─── shared helpers ─────────────────────────────────────────────────────────
 
-function closeVec(
-  a: { x: number; y: number; z: number } | undefined,
-  b: { x: number; y: number; z: number } | undefined,
-  eps = 0.01,
-): boolean {
-  if (!a || !b) return a === b
-  return (
-    Math.abs(a.x - b.x) < eps &&
-    Math.abs(a.y - b.y) < eps &&
-    Math.abs(a.z - b.z) < eps
-  )
-}
-
-function closeSize(a: SceneObjectSize, b: SceneObjectSize, eps = 0.01): boolean {
-  return (
-    Math.abs(a.width - b.width) < eps &&
-    Math.abs(a.depth - b.depth) < eps &&
-    Math.abs(a.height - b.height) < eps
-  )
-}
-
-const POSE_NUMBER_KEYS: (keyof PoseConfig)[] = [
-  'headYaw',
-  'headPitch',
-  'torsoYaw',
-  'torsoPitch',
-  'leftUpperArmPitch',
-  'leftUpperArmRoll',
-  'leftForearmBend',
-  'leftForearmYaw',
-  'rightUpperArmPitch',
-  'rightUpperArmRoll',
-  'rightForearmBend',
-  'rightForearmYaw',
-]
-
 function samePose(a: PoseConfig | undefined, b: PoseConfig | undefined): boolean {
-  if (!a || !b) return a === b
+  return sameValue(a, b)
+}
+
+function sameLight(a: LightConfig, b: LightConfig): boolean {
+  const normalize = (light: LightConfig) => {
+    const targetMode = light.targetMode ?? 'manual'
+    return {
+      ...light,
+      targetMode,
+      targetPersonId: targetMode === 'person' ? light.targetPersonId : undefined,
+      normalBias: light.normalBias ?? 0,
+    }
+  }
+  return sameValue(normalize(a), normalize(b))
+}
+
+function samePersonWithoutPose(a: PersonConfig, b: PersonConfig): boolean {
+  const normalize = (person: PersonConfig) => {
+    const rest: Partial<PersonConfig> = { ...person }
+    delete rest.pose
+    return { ...rest, modelVariant: person.modelVariant ?? 'dummy' }
+  }
+  return sameValue(normalize(a), normalize(b))
+}
+
+function sameById<T extends { id: string }>(
+  a: T[],
+  b: T[],
+  compare: (left: T, right: T) => boolean,
+): boolean {
+  if (a.length !== b.length) return false
+  const rightById = new Map(b.map((entry) => [entry.id, entry]))
+  return a.every((entry) => {
+    const other = rightById.get(entry.id)
+    return other ? compare(entry, other) : false
+  })
+}
+
+function sameValue(a: unknown, b: unknown, eps = 0.01): boolean {
+  if (Object.is(a, b)) return true
+  if (typeof a === 'number' && typeof b === 'number') return Math.abs(a - b) < eps
+  if (Array.isArray(a) || Array.isArray(b)) {
+    return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((value, index) => sameValue(value, b[index], eps))
+  }
+  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false
+
+  const left = a as Record<string, unknown>
+  const right = b as Record<string, unknown>
+  const leftKeys = Object.keys(left).filter((key) => left[key] !== undefined).sort()
+  const rightKeys = Object.keys(right).filter((key) => right[key] !== undefined).sort()
   return (
-    a.presetId === b.presetId &&
-    !!a.seated === !!b.seated &&
-    POSE_NUMBER_KEYS.every((key) => Math.abs(Number(a[key] ?? 0) - Number(b[key] ?? 0)) < 0.01)
+    leftKeys.length === rightKeys.length &&
+    leftKeys.every((key, index) => key === rightKeys[index] && sameValue(left[key], right[key], eps))
   )
 }
 

@@ -23,8 +23,33 @@ export default defineConfig(({ command, mode }) => {
     base: isTauri ? './' : command === 'build' ? '/direct-light/' : '/',
     plugins: [react(), tailwindcss()],
     build: {
-      rollupOptions: {
+      rolldownOptions: {
         input: buildInput,
+        output: {
+          codeSplitting: {
+            minSize: 20_000,
+            maxSize: 400_000,
+            groups: [
+              {
+                name: 'react-three',
+                test: /node_modules[\\/](?:@react-three|three|three-stdlib|maath)[\\/]/,
+                priority: 20,
+                maxSize: 400_000,
+              },
+              {
+                name: 'react-vendor',
+                test: /node_modules[\\/](?:react|react-dom|scheduler|zustand)[\\/]/,
+                priority: 10,
+              },
+              {
+                name: 'vendor',
+                test: /node_modules[\\/]/,
+                priority: 1,
+                maxSize: 400_000,
+              },
+            ],
+          },
+        },
       },
     },
     // Honor a PORT env var (e.g. from the preview harness) so the dev server can

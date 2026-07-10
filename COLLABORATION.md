@@ -8,7 +8,7 @@ Archive map: [`docs/history/README.md`](docs/history/README.md). Read archived m
 
 Date: 2026-07-10
 
-Released baseline: `v1.0.3`.
+Released baseline: `v1.0.4`.
 
 - GitHub: https://github.com/oukeming64-tech/direct-light
 - Live app/demo: https://oukeming64-tech.github.io/direct-light/
@@ -18,7 +18,17 @@ Released baseline: `v1.0.3`.
 - Showcase implementation is isolated under `showcase/`; do not modify main app code under `src/` for project-page-only work.
 - `src-tauri/Cargo.lock` is committed. Refresh it with `.github/workflows/lockfile.yml` when needed; do not re-add inline `time` pins or ad hoc `cargo generate-lockfile` steps to release CI.
 
-## Latest Documentation Cleanup
+## Latest Release Work and Documentation
+
+2026-07-10 (`v1.0.4` — onboarding + usability / reliability hardening):
+
+- Changed: added a five-step first-run tour for the main app, localized in Simplified Chinese / English / Japanese, with skip, completion persistence (`direct-light.onboarding.v1`), Escape handling, focus return, and a persistent `?` entry for replay.
+- Changed: moved light intensity / position controls directly below the basic light settings; collapsed quick lighting examples into a compact selector below 2xl widths; added a truthful under-960px desktop-first notice instead of letting the studio canvas collapse to zero width.
+- Changed: made object rows and saved presets keyboard-selectable, exposed slider / segmented / switch state to assistive technology, kept keyboard actions visible on focus, and synchronized the document language with the runtime language.
+- Changed: corrected A/B category comparison so beam, target, fixture, appearance, object, camera, and studio changes are not falsely labeled “same”; passive B rendering is now demand-driven, and shadow maps are rebuilt only when their resolution changes rather than on every slider tick.
+- Changed: local persistence mutations now update in-memory presets / custom fixtures only after a successful write and surface three-language failures; custom tube fixtures resolve their real category in 3D; GLB instances use skeleton-safe cloning; Vite/Rolldown production output is split into sub-500 kB chunks without raising the warning threshold.
+- Not changed: `SceneConfig`, saved preset / A/B / custom-fixture schemas, lighting formulas, rendering values, default scene contents, figure assets, public URLs, or the showcase product design delivered earlier on 2026-07-10.
+- Acceptance: lint, production + Tauri builds, diff check, persistence-failure browser injection, onboarding replay, A/B beam-only diff, custom-fixture visual lookup, GLB model switching, and 1200px / 1024px / 390px browser QA are complete for the `v1.0.4` release line.
 
 2026-07-10 (showcase visual refinement):
 
@@ -56,6 +66,7 @@ Released baseline: `v1.0.3`.
 - `v1.0.1`: free-drag of lights, camera, people, and props clamps to the studio footprint via `src/domain/studioBounds.ts`.
 - `v1.0.2`: user-customizable `.glb` figure models via `src/data/personModels.ts` and `src/scene/PersonGLB.tsx`; dummy remains the default, imported figures lazy-load on selection.
 - `v1.0.3`: shadow light-bleeding fix; per-light `normalBias` plus global `studio.shadowMode` (`variance` / `soft`). `ShadowModeSync` only forces material recompilation; do not re-add direct `gl.shadowMap.type` mutation.
+- `v1.0.4`: five-step multilingual onboarding, narrow-screen guidance, keyboard/ARIA hardening, complete A/B category detection, persistence failure feedback, custom tube / skeleton-safe GLB fixes, passive-compare and shadow-map performance fixes, and Vite/Rolldown code splitting.
 
 `LIGHT_TYPE_LABELS` and `LIGHT_TARGET_MODE_LABELS` are unused but intentionally retained until a later Codex-approved cleanup.
 

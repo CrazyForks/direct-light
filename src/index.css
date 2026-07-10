@@ -34,3 +34,26 @@ input[type='range']::-webkit-slider-thumb {
   background: #d8b4fe;
   border: 1px solid #0b0c10;
 }
+
+.direct-light-narrow {
+  display: none;
+}
+
+@media (max-width: 959px) {
+  .direct-light-workspace,
+  .onboarding-layer {
+    display: none;
+  }
+
+  .direct-light-narrow {
+    display: flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}

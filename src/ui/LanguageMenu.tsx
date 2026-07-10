@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useStore } from '../state/store'
 import { SUPPORTED_LANGUAGES, type AppLanguage } from '../i18n/languages'
 import { useT } from '../i18n/useT'
@@ -8,6 +9,10 @@ export function LanguageMenu() {
   const language = useStore((s) => s.language)
   const setLanguage = useStore((s) => s.setLanguage)
   const t = useT()
+
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
 
   return (
     <select

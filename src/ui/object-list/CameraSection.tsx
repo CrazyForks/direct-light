@@ -11,14 +11,16 @@ export function CameraSection() {
 
   return (
     <Group title={t('objectList.camera.title')}>
-      <div
+      <button
+        type="button"
         className={`${rowBase} ${rowState(isSelected(selection, 'camera', 'camera'))}`}
         onClick={() => select({ kind: 'camera', id: 'camera' })}
+        aria-pressed={isSelected(selection, 'camera', 'camera')}
       >
         <span className="text-base">🎥</span>
         <span className="flex-1">{t('objectList.camera.row')}</span>
         <span className="text-[11px] text-zinc-500">{camera.focalLength}mm</span>
-      </div>
+      </button>
     </Group>
   )
 }

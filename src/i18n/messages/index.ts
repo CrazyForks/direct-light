@@ -24,6 +24,7 @@ import { objectPanel } from './objectPanel'
 import { lightPanel } from './lightPanel'
 import { compare } from './compare'
 import { display } from './display'
+import { onboarding } from './onboarding'
 
 const zhCN = {
   ...topBar['zh-CN'],
@@ -39,6 +40,7 @@ const zhCN = {
   ...lightPanel['zh-CN'],
   ...compare['zh-CN'],
   ...display['zh-CN'],
+  ...onboarding['zh-CN'],
 }
 
 // zh-CN is the source of truth for the key set.
@@ -59,6 +61,7 @@ const en: MessageDict = {
   ...lightPanel.en,
   ...compare.en,
   ...display.en,
+  ...onboarding.en,
 }
 
 const ja: MessageDict = {
@@ -75,6 +78,7 @@ const ja: MessageDict = {
   ...lightPanel.ja,
   ...compare.ja,
   ...display.ja,
+  ...onboarding.ja,
 }
 
 export const MESSAGES: Record<AppLanguage, MessageDict> = { 'zh-CN': zhCN, en, ja }

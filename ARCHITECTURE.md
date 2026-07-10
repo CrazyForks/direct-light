@@ -14,6 +14,7 @@ This is the short current architecture map. The full historical architecture not
 - `src/app` — app shell, stage layout, view badges, A/B compare containers.
 - `src/scene` — Three.js / React Three Fiber rendering, camera rigs, drag controllers, 3D objects.
 - `src/ui` — panels, object list, top bar, controls, export UI.
+- `src/ui/onboarding` — first-run tour state/context, target positioning, focus handling, and replay entry; preference persistence stays outside scene data.
 - `src/state` — Zustand store, store types, action factories.
 - `src/state/actions` — all state mutation logic.
 - `src/domain` — product/domain pure logic.
@@ -39,9 +40,14 @@ This is the short current architecture map. The full historical architecture not
 - Shadow mode / normal bias: `src/scene/StudioScene.tsx`, `src/scene/LightRig.tsx`, `src/ui/StudioPanel.tsx`.
 - Custom fixtures: `src/domain/customFixtures.ts`, `src/domain/customFixturePack.ts`, `src/state/actions/fixtureActions.ts`.
 - Localization: `src/i18n/*`, `src/i18n/display.ts`, message dictionaries under `src/i18n/messages`.
+- First-run guidance: `src/ui/onboarding/*`, `src/i18n/messages/onboarding.ts`, and the independent `direct-light.onboarding.v1` preference in `src/lib/storage.ts`.
+- Local persistence: `src/lib/storage.ts` returns write success; preset / fixture actions commit Zustand state only after a successful localStorage write, while UI modules own localized failure feedback.
+- Production chunking: `vite.config.ts` uses Vite 8 `rolldownOptions.output.codeSplitting` groups with explicit max sizes; do not replace this by increasing `chunkSizeWarningLimit`.
 
 ## Documentation Note
 
 Changed in the 2026-06-29 cleanup: this root architecture doc was shortened to current boundaries and rules.
 
 Not changed: code structure, module responsibilities, runtime behavior, build behavior, or release status.
+
+Changed on 2026-07-10: documented the new UI-owned onboarding module and its app-preference boundary. Not changed by that note: scene/state schemas, rendering ownership, action boundaries, or release status.

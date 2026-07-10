@@ -68,11 +68,6 @@ export function LightPanel({ id }: { id: string }) {
         onTypeChange={changeType}
         onToggle={() => toggleLight(id)}
       />
-      <LightModifierSection
-        modifierId={light.modifierId}
-        onApply={(modifierId) => applyLightModifier(id, modifierId)}
-      />
-      <LightColorSection light={light} onPatch={patchLight} />
       <LightPositionSection
         light={light}
         distance={distance}
@@ -80,6 +75,11 @@ export function LightPanel({ id }: { id: string }) {
         onPatch={patchLight}
         onSetPolar={setPolar}
       />
+      <LightModifierSection
+        modifierId={light.modifierId}
+        onApply={(modifierId) => applyLightModifier(id, modifierId)}
+      />
+      <LightColorSection light={light} onPatch={patchLight} />
       <LightTargetSection
         people={people}
         targetMode={targetMode}

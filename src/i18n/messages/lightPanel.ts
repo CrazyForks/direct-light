@@ -46,7 +46,9 @@ const zh = {
   'lightPanel.fa.saveDefaultName': '我的器械',
   'lightPanel.fa.savePrompt': '把这盏灯当前的光质参数存成一个器械，名称：',
   'lightPanel.fa.saved': '已把当前灯存为器械「{name}」',
+  'lightPanel.fa.saveFailed': '保存失败：浏览器存储空间不足或不可用，器械未加入列表。',
   'lightPanel.fa.imported': '导入 {count} 个器械',
+  'lightPanel.fa.importStorageFailed': '导入失败：浏览器存储空间不足或不可用，器械未加入列表。',
   'lightPanel.fa.statusSep': '，',
   'lightPanel.fa.warnings': '{count} 条提示',
   'lightPanel.fa.errors': '{count} 条错误',
@@ -54,6 +56,7 @@ const zh = {
   'lightPanel.fa.exported': '已导出 {count} 个自定义器械。',
   'lightPanel.fa.removeConfirm': '删除自定义器械「{name}」？引用它的灯会回到「自定义参数」，当前亮度/颜色等不变。',
   'lightPanel.fa.removed': '已删除自定义器械「{name}」。',
+  'lightPanel.fa.removeFailed': '删除失败：浏览器存储不可用，原器械仍保留。',
 } as const
 
 type Key = keyof typeof zh
@@ -101,7 +104,9 @@ const en: Record<Key, string> = {
   'lightPanel.fa.saveDefaultName': 'My fixture',
   'lightPanel.fa.savePrompt': "Save this light's current quality params as a fixture. Name:",
   'lightPanel.fa.saved': 'Saved current light as fixture “{name}”',
+  'lightPanel.fa.saveFailed': 'Save failed: browser storage is full or unavailable. The fixture was not added.',
   'lightPanel.fa.imported': 'Imported {count} fixtures',
+  'lightPanel.fa.importStorageFailed': 'Import failed: browser storage is full or unavailable. No fixtures were added.',
   'lightPanel.fa.statusSep': ', ',
   'lightPanel.fa.warnings': '{count} warnings',
   'lightPanel.fa.errors': '{count} errors',
@@ -109,6 +114,7 @@ const en: Record<Key, string> = {
   'lightPanel.fa.exported': 'Exported {count} custom fixtures.',
   'lightPanel.fa.removeConfirm': 'Remove custom fixture “{name}”? Lights using it revert to “Custom params”; current intensity/color stay unchanged.',
   'lightPanel.fa.removed': 'Removed custom fixture “{name}”.',
+  'lightPanel.fa.removeFailed': 'Remove failed: browser storage is unavailable. The fixture was kept.',
 }
 
 const ja: Record<Key, string> = {
@@ -154,7 +160,9 @@ const ja: Record<Key, string> = {
   'lightPanel.fa.saveDefaultName': 'マイ器具',
   'lightPanel.fa.savePrompt': 'このライトの現在の光質パラメータを器具として保存します。名前：',
   'lightPanel.fa.saved': '現在のライトを器具「{name}」として保存しました',
+  'lightPanel.fa.saveFailed': '保存できませんでした。ブラウザの保存領域が不足または使用不可です。器具は追加されていません。',
   'lightPanel.fa.imported': '{count} 個の器具をインポートしました',
+  'lightPanel.fa.importStorageFailed': 'インポートできませんでした。ブラウザの保存領域が不足または使用不可です。器具は追加されていません。',
   'lightPanel.fa.statusSep': '、',
   'lightPanel.fa.warnings': '{count} 件の注意',
   'lightPanel.fa.errors': '{count} 件のエラー',
@@ -162,6 +170,7 @@ const ja: Record<Key, string> = {
   'lightPanel.fa.exported': '{count} 個のカスタム器具をエクスポートしました。',
   'lightPanel.fa.removeConfirm': 'カスタム器具「{name}」を削除しますか？参照しているライトは「カスタムパラメータ」に戻ります。現在の強度/カラーなどは変更されません。',
   'lightPanel.fa.removed': 'カスタム器具「{name}」を削除しました。',
+  'lightPanel.fa.removeFailed': '削除できませんでした。ブラウザの保存領域が使用不可のため、元の器具を保持しました。',
 }
 
 export const lightPanel: Record<AppLanguage, Record<Key, string>> = { 'zh-CN': zh, en, ja }

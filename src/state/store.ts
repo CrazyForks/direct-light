@@ -37,6 +37,6 @@ export const useStore = create<Store>((set, get) => ({
   ...createLightActions(set, get),
   ...createPersonActions(set, get),
   ...createObjectActions(set, get),
-  ...createPresetActions(set),
+  ...createPresetActions(set, get),
   ...createFixtureActions(set, get),
 }))

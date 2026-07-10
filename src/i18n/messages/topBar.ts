@@ -10,6 +10,7 @@ const zh = {
   'topBar.exportImage': '导出图片',
   'topBar.reset': '重置',
   'topBar.resetTitle': '重置为默认场景',
+  'topBar.quickLooks': '快速布光示例',
 } as const
 
 type Key = keyof typeof zh
@@ -19,6 +20,7 @@ const en: Record<Key, string> = {
   'topBar.exportImage': 'Export image',
   'topBar.reset': 'Reset',
   'topBar.resetTitle': 'Reset to the default scene',
+  'topBar.quickLooks': 'Quick lighting looks',
 }
 
 const ja: Record<Key, string> = {
@@ -26,6 +28,7 @@ const ja: Record<Key, string> = {
   'topBar.exportImage': '画像を書き出し',
   'topBar.reset': 'リセット',
   'topBar.resetTitle': 'デフォルトシーンに戻す',
+  'topBar.quickLooks': 'クイック照明例',
 }
 
 export const topBar: Record<AppLanguage, Record<Key, string>> = { 'zh-CN': zh, en, ja }

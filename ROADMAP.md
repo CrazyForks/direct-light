@@ -4,7 +4,7 @@ This file is the short current roadmap. Completed historical planning lives in [
 
 ## Current Baseline
 
-Released baseline: `v1.0.3`.
+Released baseline: `v1.0.4`.
 
 Completed and released:
 
@@ -12,6 +12,7 @@ Completed and released:
 - v1.0.1 studio-footprint drag bounds.
 - v1.0.2 user-customizable `.glb` figure models.
 - v1.0.3 shadow light-bleeding fix.
+- v1.0.4 onboarding, accessibility, A/B correctness, persistence reliability, custom fixture / GLB compatibility, and production code splitting.
 - GitHub Pages app root and `/showcase/` project page.
 - macOS desktop packaging through Tauri CI.
 
@@ -32,7 +33,7 @@ The most important behavior remains:
 These are invitation areas for real-use feedback and scoped proposals, not pre-approved features:
 
 - More realistic fixture / photometric data.
-- Mobile/narrow-screen workflow improvements for the app.
+- A full mobile/narrow-screen workspace beyond the current under-960px guidance gate.
 - More export/share flows for communicating lighting plans.
 - Continued rendering polish when it fixes a concrete visual regression.
 
@@ -58,4 +59,6 @@ Changed in the 2026-06-29 cleanup: this root roadmap was shortened to current st
 
 Changed on 2026-07-10: candidate work now links to public feedback and contribution entry points, while remaining explicitly uncommitted until scoped.
 
-Not changed: product priorities, released version status, app code, build behavior, and release workflow.
+Changed on 2026-07-10: moved the onboarding / accessibility / A-B correctness line into released `v1.0.4`, together with persistence, fixture / GLB, performance, and code-splitting fixes; full mobile layout remains a candidate rather than being implied complete by the narrow-screen notice.
+
+Not changed by the roadmap update: product priorities, release workflow, rendering goals, or public URLs.

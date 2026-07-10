@@ -15,7 +15,7 @@ export function LightFixtureActions({ lightId, selectedFixture }: { lightId: str
   const exportCustomFixtures = useStore((s) => s.exportCustomFixtures)
   const removeCustomFixture = useStore((s) => s.removeCustomFixture)
   const fileRef = useRef<HTMLInputElement>(null)
-  const [status, setStatus] = useState('')
+  const [status, setStatus] = useState<{ message: string; error: boolean } | null>(null)
   const t = useT()
 
   const removable = selectedFixture != null && isCustomFixture(selectedFixture)
@@ -25,8 +25,11 @@ export function LightFixtureActions({ lightId, selectedFixture }: { lightId: str
     if (name == null) return
     const trimmed = name.trim()
     if (!trimmed) return
-    saveCurrentLightAsFixture(lightId, trimmed)
-    setStatus(t('lightPanel.fa.saved', { name: trimmed }))
+    setStatus(
+      saveCurrentLightAsFixture(lightId, trimmed)
+        ? { message: t('lightPanel.fa.saved', { name: trimmed }), error: false }
+        : { message: t('lightPanel.fa.saveFailed'), error: true },
+    )
   }
 
   const onFile = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,10 +38,17 @@ export function LightFixtureActions({ lightId, selectedFixture }: { lightId: str
     if (!file) return
     const text = await file.text()
     const res = importCustomFixtures(text)
-    const parts = [t('lightPanel.fa.imported', { count: res.added })]
+    const parts = [
+      res.persisted
+        ? t('lightPanel.fa.imported', { count: res.added })
+        : t('lightPanel.fa.importStorageFailed'),
+    ]
     if (res.warnings.length > 0) parts.push(t('lightPanel.fa.warnings', { count: res.warnings.length }))
     if (res.errors.length > 0) parts.push(t('lightPanel.fa.errors', { count: res.errors.length }))
-    setStatus(parts.join(t('lightPanel.fa.statusSep')))
+    setStatus({
+      message: parts.join(t('lightPanel.fa.statusSep')),
+      error: !res.persisted || res.errors.length > 0,
+    })
     if (res.errors.length > 0 || res.warnings.length > 0) {
       // Surface the details for debugging without a heavy UI.
       console.info('[custom-fixture import]', { errors: res.errors, warnings: res.warnings })
@@ -47,20 +57,26 @@ export function LightFixtureActions({ lightId, selectedFixture }: { lightId: str
 
   const onExport = () => {
     if (customFixtures.length === 0) {
-      setStatus(t('lightPanel.fa.exportEmpty'))
+      setStatus({ message: t('lightPanel.fa.exportEmpty'), error: false })
       return
     }
     const text = exportCustomFixtures()
     downloadDataUrl('data:application/json;charset=utf-8,' + encodeURIComponent(text), 'direct-light-fixtures.json')
-    setStatus(t('lightPanel.fa.exported', { count: customFixtures.length }))
+    setStatus({
+      message: t('lightPanel.fa.exported', { count: customFixtures.length }),
+      error: false,
+    })
   }
 
   const onRemove = () => {
     if (!removable || !selectedFixture) return
     const ok = window.confirm(t('lightPanel.fa.removeConfirm', { name: selectedFixture.label }))
     if (!ok) return
-    removeCustomFixture(selectedFixture.id)
-    setStatus(t('lightPanel.fa.removed', { name: selectedFixture.label }))
+    setStatus(
+      removeCustomFixture(selectedFixture.id)
+        ? { message: t('lightPanel.fa.removed', { name: selectedFixture.label }), error: false }
+        : { message: t('lightPanel.fa.removeFailed'), error: true },
+    )
   }
 
   const btn = 'rounded-lg bg-zinc-800/60 px-2.5 py-1.5 text-[11px] text-zinc-200 hover:bg-zinc-700/60'
@@ -68,23 +84,31 @@ export function LightFixtureActions({ lightId, selectedFixture }: { lightId: str
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex flex-wrap gap-1.5">
-        <button onClick={onSave} className={btn}>
+        <button type="button" onClick={onSave} className={btn}>
           {t('lightPanel.fa.save')}
         </button>
-        <button onClick={() => fileRef.current?.click()} className={btn}>
+        <button type="button" onClick={() => fileRef.current?.click()} className={btn}>
           {t('lightPanel.fa.import')}
         </button>
-        <button onClick={onExport} className={btn}>
+        <button type="button" onClick={onExport} className={btn}>
           {t('lightPanel.fa.export')}
         </button>
         {removable && (
-          <button onClick={onRemove} className="rounded-lg bg-zinc-800/60 px-2.5 py-1.5 text-[11px] text-red-300 hover:bg-red-500/20">
+          <button type="button" onClick={onRemove} className="rounded-lg bg-zinc-800/60 px-2.5 py-1.5 text-[11px] text-red-300 hover:bg-red-500/20">
             {t('lightPanel.fa.remove')}
           </button>
         )}
         <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={onFile} />
       </div>
-      {status && <p className="text-[11px] text-zinc-400">{status}</p>}
+      {status && (
+        <p
+          role="status"
+          aria-live="polite"
+          className={`text-[11px] ${status.error ? 'text-red-300' : 'text-emerald-300'}`}
+        >
+          {status.message}
+        </p>
+      )}
     </div>
   )
 }

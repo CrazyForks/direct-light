@@ -11,7 +11,7 @@
 > A white-studio lighting previz sandbox for directors, DPs, and gaffers. 👉 English readme: [`README.en.md`](README.en.md)
 
 - 🧭 项目展示页：<https://oukeming64-tech.github.io/direct-light/showcase/>
-- 🌐 在线 demo：<https://oukeming64-tech.github.io/direct-light/> —— 免安装、手机也能开，随 `main` 自动更新。
+- 🌐 在线 demo：<https://oukeming64-tech.github.io/direct-light/> —— 免安装，工作台需至少 960px 宽；窄屏会给出横屏 / 扩窗提示，随 `main` 自动更新。
 - 🖥️ macOS 桌面版：[Releases](https://github.com/oukeming64-tech/direct-light/releases/latest) 的 `.dmg`（Apple Silicon / Intel 通用）。
 
 > 发现灯光、阴影或交互不符合预期？欢迎[提交问题或视觉反馈](https://github.com/oukeming64-tech/direct-light/issues/new/choose)。有布光方案、片场工作流或还不成熟的想法，也欢迎到 [Discussions](https://github.com/oukeming64-tech/direct-light/discussions) 交流；不需要会写代码。
@@ -24,12 +24,13 @@
 
 ## 当前状态
 
-当前公开版本：**`v1.0.3`**。白棚灯光预演的核心功能已全部就绪，并完整支持简体中文 / English / 日本語 运行时切换。
+当前公开版本：**`v1.0.4`**。白棚灯光预演的核心功能已全部就绪，并完整支持简体中文 / English / 日本語 运行时切换。
 
 - `v1.0.0`：首个正式大版本，多语言 UI。
 - `v1.0.1`：自由拖动按白棚尺寸夹紧。
 - `v1.0.2`：用户自定义 `.glb` 人像模型。
 - `v1.0.3`：阴影漏光修复（每盏灯「法线偏移」滑杆 + 「柔和阴影 (PCF)」开关）。
+- `v1.0.4`：五步新手导览、键盘/读屏体验、A/B 正确性、本地保存失败反馈、器械/人物模型兼容与生产拆包收口。
 
 完整逐版更新见 [`CHANGELOG.md`](CHANGELOG.md)。
 
@@ -44,6 +45,7 @@
 - 🎥 **多视图 + 摄影机**：镜头 / 自由 / 俯视 / 侧视；摄影机方位角、距离、高度、焦段、画幅、机位预设、从自由视角取景。
 - 🔀 **A/B 对比 · 保存 · 导出**：方案存到浏览器 localStorage，A/B 冻结对比带差异摘要，导出预览图用于团队沟通。
 - 🌐 **多语言 UI**：运行时切换简体中文 / English / 日本語；语言只影响界面显示，不写入场景、保存方案、A/B 或自定义器械数据。
+- 🧭 **首次导览 + 键盘操作**：五步认识「选对象 → 看画面 → 调参数 → 存方案 → 导出」，可跳过、随时从 `?` 重看；核心对象行和参数控件支持键盘与读屏状态。
 
 ## 截图
 
@@ -94,7 +96,7 @@ Vite · React 19 · TypeScript · React Three Fiber + drei（Three.js）· Zusta
 
 - 最多 6 盏灯（`MAX_LIGHTS = 6`）；默认场景仍是 Key/Fill/Rim 三盏。
 - 自定义灯具器械只存本地 localStorage，跨设备 / 分享需用「导出 / 导入」手动搬运。
-- 桌面 / 工作台体验优先；移动端窄屏响应式后续单独排期。
+- 桌面 / 工作台体验优先；960px 以下会显示明确的扩窗提示，完整移动端工作区后续单独排期。
 - 渲染是导演沟通向近似，不是物理准确模拟：白棚反射、柔光、彩色溢光和控光器材光学都以可读、稳定、实时为先。
 
 ## 参与项目

@@ -11,7 +11,7 @@
 > 中文文档（主文档）: [`README.md`](README.md)
 
 - 🧭 Project page: <https://oukeming64-tech.github.io/direct-light/showcase/>
-- 🌐 Live demo: <https://oukeming64-tech.github.io/direct-light/> — no install, works on mobile too, auto-updated on every push to `main`.
+- 🌐 Live demo: <https://oukeming64-tech.github.io/direct-light/> — no install; the workspace needs at least 960px width, with a landscape/widen-window notice below that, auto-updated on every push to `main`.
 - 🖥️ macOS desktop: the `.dmg` on [Releases](https://github.com/oukeming64-tech/direct-light/releases/latest) (universal Apple Silicon / Intel).
 
 > Found lighting, shadow, or interaction behavior that does not look right? [Report a bug or visual issue](https://github.com/oukeming64-tech/direct-light/issues/new/choose). To share a lighting setup, a real production workflow, or an early idea, start a thread in [Discussions](https://github.com/oukeming64-tech/direct-light/discussions) — no code required.
@@ -24,12 +24,13 @@ A frontend-only web app, no backend. It optimizes for **communication, real-time
 
 ## Status
 
-Current public version: **`v1.0.3`**. The white-studio lighting-previz core is feature-complete, with full runtime localization in 简体中文 / English / 日本語.
+Current public version: **`v1.0.4`**. The white-studio lighting-previz core is feature-complete, with full runtime localization in 简体中文 / English / 日本語.
 
 - `v1.0.0`: first stable major release; multilingual UI.
 - `v1.0.1`: free-drag clamped to the studio footprint.
 - `v1.0.2`: user-customizable `.glb` figure models.
 - `v1.0.3`: shadow light-bleeding fix (per-light "normal bias" slider + a "soft shadows (PCF)" toggle).
+- `v1.0.4`: five-step onboarding, keyboard/screen-reader workflow, A/B correctness, persistence failure feedback, fixture/figure compatibility, and production code splitting.
 
 Full per-version history in [`CHANGELOG.md`](CHANGELOG.md).
 
@@ -44,6 +45,7 @@ Full per-version history in [`CHANGELOG.md`](CHANGELOG.md).
 - 🎥 **Views + camera** — camera / free-orbit / top / side views; camera azimuth, distance, height, focal length, aspect ratio, position presets, and "frame from free view".
 - 🔀 **A/B compare · save · export** — presets saved to browser localStorage, frozen A/B compare with a difference summary, and preview-image export for sharing with the crew.
 - 🌐 **Multilingual UI** — switch Simplified Chinese / English / Japanese at runtime; language only changes UI display and never enters scenes, presets, A/B snapshots, or custom fixture data.
+- 🧭 **First-run tour + keyboard workflow** — five steps cover select → preview → adjust → save → export, with skip and replay from `?`; core object rows and parameter controls expose keyboard and assistive-technology state.
 
 ## Screenshots
 
@@ -94,7 +96,7 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) (Chinese) for full module boundaries, a
 
 - Up to 6 lights (`MAX_LIGHTS = 6`); the default scene still ships 3 (Key/Fill/Rim).
 - Custom fixtures live in localStorage only — moving them across devices / sharing is via JSON export / import.
-- Desktop-first; a narrow-mobile responsive layout is scheduled separately.
+- Desktop-first; below 960px the app shows a clear widen-window notice, while a complete mobile workspace remains separately scoped.
 - The renderer is a communication-oriented approximation, not a physically accurate simulation: studio reflectance, soft light, colored spill, and gear optics all favor readable, stable, real-time output.
 
 ## Contributing

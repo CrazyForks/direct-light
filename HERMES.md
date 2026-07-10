@@ -42,10 +42,11 @@ Hermes must not:
 
 ## Current Active Line
 
-- Released baseline: `v1.0.3` (shadow light-bleeding fix → `v1.0.2` figure models → `v1.0.1` drag-bounds → `v1.0.0` first stable major release; multilingual UI complete; user chose 1.0.0 over 0.10.0).
+- Released baseline: `v1.0.4` (onboarding + usability/reliability hardening → `v1.0.3` shadow fix → `v1.0.2` figure models → `v1.0.1` drag bounds → `v1.0.0` multilingual stable release).
 - v0.10 multilingual UI is complete locally and user-accepted on 2026-06-24.
 - i18n foundation, v0.10b tier-A UI extraction, v0.10.1 built-in display labels + `sceneDiff` localized copy, and v0.10 closeout are complete.
 - `LIGHT_TYPE_LABELS` and `LIGHT_TARGET_MODE_LABELS` are unused but intentionally retained until a later Codex-approved cleanup.
+- `v1.0.4` (released, tagged 2026-07-10): five-step multilingual onboarding + `?` replay, under-960px desktop guidance, keyboard/ARIA fixes, complete A/B category comparison, persistence failure feedback, custom tube / skeleton-safe GLB fixes, demand-driven passive B rendering, shadow-map rebuilds limited to resolution changes, and Vite/Rolldown sub-500 kB code splitting. Scene/preset schemas and rendering values did not change.
 
 For v0.10:
 

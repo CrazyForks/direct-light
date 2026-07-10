@@ -4,7 +4,7 @@ import { useStore } from '../../state/store'
 import { useT, useLanguage } from '../../i18n/useT'
 import { getSceneObjectKindLabel, getSceneObjectPresetLabel } from '../../i18n/display'
 import { Group } from './Group'
-import { isSelected, rowBase, rowState } from './rowUtils'
+import { isSelected, rowActions, rowBase, rowSelect, rowState } from './rowUtils'
 
 export function SceneObjectsSection() {
   const objects = useStore((s) => s.scene.objects)
@@ -23,6 +23,7 @@ export function SceneObjectsSection() {
       action={
         objects.length < MAX_OBJECTS ? (
           <select
+            aria-label={t('objectList.objects.addPlaceholder')}
             className="rounded bg-zinc-800/60 px-1 py-0.5 text-[11px] text-zinc-300 outline-none"
             value=""
             onChange={(e) => {
@@ -57,9 +58,9 @@ export function SceneObjectsSection() {
         <div
           key={object.id}
           className={`${rowBase} group ${rowState(isSelected(selection, 'object', object.id))}`}
-          onClick={() => select({ kind: 'object', id: object.id })}
         >
           <button
+            type="button"
             className="px-0.5 text-[11px]"
             title={object.visible ? t('objectList.objects.hide') : t('objectList.objects.show')}
             onClick={(e) => {
@@ -69,10 +70,18 @@ export function SceneObjectsSection() {
           >
             {object.visible ? '👁' : '🚫'}
           </button>
-          <span className={`flex-1 truncate ${object.visible ? '' : 'text-zinc-500'}`}>{object.name}</span>
-          <span className="text-[10px] text-zinc-500">{getSceneObjectKindLabel(language, object.kind)}</span>
-          <div className="flex items-center opacity-0 transition group-hover:opacity-100">
+          <button
+            type="button"
+            className={rowSelect}
+            onClick={() => select({ kind: 'object', id: object.id })}
+            aria-pressed={isSelected(selection, 'object', object.id)}
+          >
+            <span className={`flex-1 truncate ${object.visible ? '' : 'text-zinc-500'}`}>{object.name}</span>
+            <span className="text-[10px] text-zinc-500">{getSceneObjectKindLabel(language, object.kind)}</span>
+          </button>
+          <div className={rowActions}>
             <button
+              type="button"
               className="px-1 text-zinc-400 hover:text-violet-300 disabled:opacity-30"
               title={t('objectList.objects.duplicate')}
               disabled={objects.length >= MAX_OBJECTS}
@@ -84,6 +93,7 @@ export function SceneObjectsSection() {
               ⧉
             </button>
             <button
+              type="button"
               className="px-1 text-zinc-400 hover:text-red-300"
               title={t('objectList.objects.delete')}
               onClick={(e) => {

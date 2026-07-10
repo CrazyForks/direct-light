@@ -85,9 +85,14 @@ export type Store = {
   // custom fixture and clears the marker on any light that referenced it (raw
   // params untouched). importCustomFixtures parses a pack file and returns a
   // summary. exportCustomFixtures serializes the whole custom library.
-  saveCurrentLightAsFixture: (lightId: string, name: string) => void
-  removeCustomFixture: (fixtureId: string) => void
-  importCustomFixtures: (text: string) => { added: number; errors: string[]; warnings: string[] }
+  saveCurrentLightAsFixture: (lightId: string, name: string) => boolean
+  removeCustomFixture: (fixtureId: string) => boolean
+  importCustomFixtures: (text: string) => {
+    added: number
+    errors: string[]
+    warnings: string[]
+    persisted: boolean
+  }
   exportCustomFixtures: () => string
   // v0.6a: attach a control modifier to a light (undefined → 无附件); only writes
   // modifierId, never the raw intensity/beamAngle/softness.
@@ -113,11 +118,11 @@ export type Store = {
   applyDebugPreset: (id: string) => void
 
   // presets (localStorage)
-  savePreset: (name: string, previewImage?: string) => void
+  savePreset: (name: string, previewImage?: string) => boolean
   loadPreset: (id: string) => void
-  duplicatePreset: (id: string) => void
-  renamePreset: (id: string, name: string) => void
-  deletePreset: (id: string) => void
+  duplicatePreset: (id: string) => boolean
+  renamePreset: (id: string, name: string) => boolean
+  deletePreset: (id: string) => boolean
 }
 
 // Shared signatures for the per-group action factories in `./actions/*`.

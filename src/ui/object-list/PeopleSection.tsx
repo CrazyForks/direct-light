@@ -2,7 +2,7 @@ import { MAX_PEOPLE } from '../../data/defaults'
 import { useStore } from '../../state/store'
 import { useT } from '../../i18n/useT'
 import { Group } from './Group'
-import { isSelected, rowBase, rowState } from './rowUtils'
+import { isSelected, rowActions, rowBase, rowSelect, rowState } from './rowUtils'
 
 export function PeopleSection() {
   const people = useStore((s) => s.scene.people)
@@ -34,13 +34,20 @@ export function PeopleSection() {
         <div
           key={person.id}
           className={`${rowBase} group ${rowState(isSelected(selection, 'person', person.id))}`}
-          onClick={() => select({ kind: 'person', id: person.id })}
         >
-          <span className="text-base">🧍</span>
-          <span className="flex-1 truncate">{person.name}</span>
-          <span className="text-[11px] text-zinc-500">{person.height.toFixed(2)}m</span>
-          <div className="flex items-center opacity-0 transition group-hover:opacity-100">
+          <button
+            type="button"
+            className={rowSelect}
+            onClick={() => select({ kind: 'person', id: person.id })}
+            aria-pressed={isSelected(selection, 'person', person.id)}
+          >
+            <span className="text-base">🧍</span>
+            <span className="flex-1 truncate">{person.name}</span>
+            <span className="text-[11px] text-zinc-500">{person.height.toFixed(2)}m</span>
+          </button>
+          <div className={rowActions}>
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation()
                 duplicatePerson(person.id)
@@ -52,6 +59,7 @@ export function PeopleSection() {
               ⧉
             </button>
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation()
                 removePerson(person.id)

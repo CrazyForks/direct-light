@@ -11,16 +11,18 @@ export function StudioSection() {
 
   return (
     <Group title={t('objectList.studio.title')}>
-      <div
+      <button
+        type="button"
         className={`${rowBase} ${rowState(isSelected(selection, 'studio', 'studio'))}`}
         onClick={() => select({ kind: 'studio', id: 'studio' })}
+        aria-pressed={isSelected(selection, 'studio', 'studio')}
       >
         <span className="text-base">⬜</span>
         <span className="flex-1">{t('objectList.studio.row')}</span>
         <span className="text-[11px] text-zinc-500">
           {studio.width}×{studio.depth}
         </span>
-      </div>
+      </button>
     </Group>
   )
 }

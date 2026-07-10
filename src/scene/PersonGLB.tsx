@@ -1,6 +1,7 @@
 import { useMemo, useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
+import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js'
 import type { ThreeEvent } from '@react-three/fiber'
 import type { PersonConfig, PoseConfig } from '../types'
 import { PERSON_MODELS } from '../data/personModels'
@@ -40,7 +41,9 @@ export function PersonGLB({ person, selected, onSelect, onPointerDown }: Props) 
   const { scene } = useGLTF(modelDef.path)
 
   const cloned = useMemo(() => {
-    const clone = scene.clone(true)
+    // SkeletonUtils keeps SkinnedMesh instances bound to their cloned bones;
+    // Object3D.clone(true) shares skeleton state and breaks multi-person rigs.
+    const clone = cloneSkeleton(scene)
     clone.traverse((node) => {
       if ((node as THREE.Mesh).isMesh) {
         ;(node as THREE.Mesh).castShadow = true
@@ -90,4 +93,3 @@ export function PersonGLB({ person, selected, onSelect, onPointerDown }: Props) 
 // No eager preload: the dummy is the default, so GLBs load lazily on first
 // selection (Suspense shows the dummy as fallback meanwhile). This keeps startup
 // from fetching multi-MB models nobody asked for.
-

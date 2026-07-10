@@ -1,4 +1,4 @@
-import type { Store, StoreSet } from '../storeTypes'
+import type { Store, StoreGet, StoreSet } from '../storeTypes'
 import type { LightingPreset } from '../../types'
 import { buildDefaultScene } from '../../data/defaults'
 import { normalizePreset, normalizeScene } from '../../domain/sceneMigration'
@@ -6,6 +6,7 @@ import { newId, savePresets } from '../../lib/storage'
 
 export function createPresetActions(
   set: StoreSet,
+  get: StoreGet,
 ): Pick<
   Store,
   'resetScene' | 'applyDebugPreset' | 'savePreset' | 'loadPreset' | 'duplicatePreset' | 'renamePreset' | 'deletePreset'
@@ -74,19 +75,20 @@ export function createPresetActions(
         return { scene }
       }),
 
-    savePreset: (name, previewImage) =>
-      set((s) => {
-        const preset: LightingPreset = {
-          id: newId('preset'),
-          name: name.trim() || `方案 ${s.presets.length + 1}`,
-          sceneSnapshot: structuredClone(s.scene),
-          previewImage,
-          createdAt: Date.now(),
-        }
-        const presets = [...s.presets, preset]
-        savePresets(presets)
-        return { presets }
-      }),
+    savePreset: (name, previewImage) => {
+      const s = get()
+      const preset: LightingPreset = {
+        id: newId('preset'),
+        name: name.trim() || `方案 ${s.presets.length + 1}`,
+        sceneSnapshot: structuredClone(s.scene),
+        previewImage,
+        createdAt: Date.now(),
+      }
+      const presets = [...s.presets, preset]
+      if (!savePresets(presets)) return false
+      set({ presets })
+      return true
+    },
 
     loadPreset: (id) =>
       set((s) => {
@@ -95,33 +97,37 @@ export function createPresetActions(
         return { scene: normalizeScene(preset.sceneSnapshot), selection: null }
       }),
 
-    duplicatePreset: (id) =>
-      set((s) => {
-        const preset = s.presets.find((p) => p.id === id)
-        if (!preset) return s
-        const copy: LightingPreset = {
-          ...normalizePreset(structuredClone(preset)),
-          id: newId('preset'),
-          name: `${preset.name} Copy`,
-          createdAt: Date.now(),
-        }
-        const presets = [...s.presets, copy]
-        savePresets(presets)
-        return { presets }
-      }),
+    duplicatePreset: (id) => {
+      const s = get()
+      const preset = s.presets.find((p) => p.id === id)
+      if (!preset) return false
+      const copy: LightingPreset = {
+        ...normalizePreset(structuredClone(preset)),
+        id: newId('preset'),
+        name: `${preset.name} Copy`,
+        createdAt: Date.now(),
+      }
+      const presets = [...s.presets, copy]
+      if (!savePresets(presets)) return false
+      set({ presets })
+      return true
+    },
 
-    renamePreset: (id, name) =>
-      set((s) => {
-        const presets = s.presets.map((p) => (p.id === id ? { ...p, name } : p))
-        savePresets(presets)
-        return { presets }
-      }),
+    renamePreset: (id, name) => {
+      const s = get()
+      if (!s.presets.some((preset) => preset.id === id)) return false
+      const presets = s.presets.map((preset) => (preset.id === id ? { ...preset, name } : preset))
+      if (!savePresets(presets)) return false
+      set({ presets })
+      return true
+    },
 
-    deletePreset: (id) =>
-      set((s) => {
-        const presets = s.presets.filter((p) => p.id !== id)
-        savePresets(presets)
-        return { presets }
-      }),
+    deletePreset: (id) => {
+      const s = get()
+      const presets = s.presets.filter((preset) => preset.id !== id)
+      if (presets.length === s.presets.length || !savePresets(presets)) return false
+      set({ presets })
+      return true
+    },
   }
 }

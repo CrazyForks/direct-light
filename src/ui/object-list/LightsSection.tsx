@@ -4,7 +4,7 @@ import { useStore } from '../../state/store'
 import { useT, useLanguage } from '../../i18n/useT'
 import { getLightTypeLabel } from '../../i18n/display'
 import { Group } from './Group'
-import { isSelected, rowBase, rowState } from './rowUtils'
+import { isSelected, rowActions, rowBase, rowSelect, rowState } from './rowUtils'
 
 export function LightsSection() {
   const lights = useStore((s) => s.scene.lights)
@@ -19,6 +19,7 @@ export function LightsSection() {
 
   return (
     <Group
+      onboarding="lights"
       title={t('objectList.lights.title', { current: lights.length, max: MAX_LIGHTS })}
       action={
         lights.length < MAX_LIGHTS ? (
@@ -40,9 +41,9 @@ export function LightsSection() {
           <div
             key={light.id}
             className={`${rowBase} group ${rowState(isSelected(selection, 'light', light.id))}`}
-            onClick={() => select({ kind: 'light', id: light.id })}
           >
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation()
                 toggleLight(light.id)
@@ -53,11 +54,21 @@ export function LightsSection() {
                 borderColor: light.enabled ? swatch : '#52525b',
               }}
               title={light.enabled ? t('objectList.lights.off') : t('objectList.lights.on')}
+              aria-label={light.enabled ? t('objectList.lights.off') : t('objectList.lights.on')}
+              aria-pressed={light.enabled}
             />
-            <span className={`flex-1 truncate ${light.enabled ? '' : 'text-zinc-500'}`}>{light.name}</span>
-            <span className="text-[10px] text-zinc-500">{getLightTypeLabel(language, light.type)}</span>
-            <div className="flex items-center opacity-0 transition group-hover:opacity-100">
+            <button
+              type="button"
+              className={rowSelect}
+              onClick={() => select({ kind: 'light', id: light.id })}
+              aria-pressed={isSelected(selection, 'light', light.id)}
+            >
+              <span className={`flex-1 truncate ${light.enabled ? '' : 'text-zinc-500'}`}>{light.name}</span>
+              <span className="text-[10px] text-zinc-500">{getLightTypeLabel(language, light.type)}</span>
+            </button>
+            <div className={rowActions}>
               <button
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation()
                   duplicateLight(light.id)
@@ -69,6 +80,7 @@ export function LightsSection() {
                 ⧉
               </button>
               <button
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation()
                   removeLight(light.id)
