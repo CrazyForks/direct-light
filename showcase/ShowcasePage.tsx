@@ -12,50 +12,50 @@ const releaseHref = 'https://github.com/oukeming64-tech/direct-light/releases/la
 
 const storyChapters = [
   {
-    kicker: '01 · 光的性格',
-    title: '先看颜色和质感，再决定用哪盏灯。',
-    body: '白光、彩光、硬光和柔光会同时作用于人物、地面和白棚反射。结果不是参数表，而是可以直接判断的画面。',
+    kicker: '01 · 看光',
+    title: '先看颜色落在哪，再谈情绪。',
+    body: '白光、彩光、硬光、柔光，都会落到人物、地面和白棚上。别在参数表里猜，直接看画面。',
     image: colorShotUrl,
     alt: '绿色彩光照亮人物并染色白棚',
   },
   {
-    kicker: '02 · 阴影关系',
-    title: '灯位一变，影子的方向和长度立刻回应。',
-    body: '把灯放低，地面投影拉长；把灯升高，影子收短。用可见变化沟通，而不是靠所有人想象同一句话。',
+    kicker: '02 · 看影',
+    title: '灯位变了，影子不会含糊。',
+    body: '灯放低，地面投影拉长；灯升高，影子收短。调一下，当场就知道差在哪。',
     image: shadowShotUrl,
     alt: '低灯位形成更长的白棚地面投影',
   },
   {
-    kicker: '03 · 镜头结果',
-    title: '最后站到摄影机里，看这套光是否真的成立。',
-    body: '从自由视角切换到镜头视角，调整焦段、画幅和机位。布光、构图与人物关系留在同一个工作台里。',
+    kicker: '03 · 看镜头',
+    title: '最后回到镜头里，判断这套光。',
+    body: '切到摄影机视角，再调焦段、画幅和机位。灯怎么摆，最后都要回到会被拍下来的那一格。',
     image: lensShotUrl,
     alt: 'Direct Light 摄影机镜头视角中的人物和光影',
   },
 ]
 
 const metrics = [
-  ['6', '盏灯同时管理'],
-  ['5', '个人物共同走位'],
-  ['4', '种视角快速切换'],
-  ['A/B', '冻结方案直接比较'],
+  ['6', '盏灯同棚'],
+  ['5', '人同场走位'],
+  ['4', '种观察视角'],
+  ['A/B', '两个方案并排'],
 ]
 
 const workflow = [
   {
     number: '01',
-    title: '摆出关系',
-    text: '放入人物、灯具和控光附件，先建立一个所有人都能看懂的白棚。',
+    title: '把关系摆出来',
+    text: '人物站哪，灯从哪来，附件放在哪里。先把片场里最容易说岔的关系摆清楚。',
   },
   {
     number: '02',
-    title: '进入镜头',
-    text: '调整机位、焦段与画幅，让布光判断回到最终会被拍到的画面。',
+    title: '站进镜头里',
+    text: '切到摄影机视角，再调焦段、画幅和机位。最后拍到什么，现在就能看见。',
   },
   {
     number: '03',
-    title: '带走方案',
-    text: '保存预设，冻结 A/B，对比差异，再导出预览图交给团队继续沟通。',
+    title: '把方案带走',
+    text: '保存预设，冻结 A/B，再导出预览图。开会时少比划一点，看片时少猜一点。',
   },
 ]
 
@@ -122,19 +122,18 @@ export function ShowcasePage() {
       <section className="hero-section" id="overview" aria-labelledby="hero-title">
         <div className="hero-beam" aria-hidden="true" />
         <div className="hero-copy" data-reveal>
-          <p className="eyebrow">White-studio lighting previz</p>
+          <p className="eyebrow">Direct Light · 白棚灯光预演</p>
           <h1 id="hero-title">
-            在开机之前，
-            <span>先看见光。</span>
+            <span className="hero-line">先摆灯。</span>
+            <span className="hero-line hero-line-accent">再开机。</span>
           </h1>
           <p className="hero-lead">
-            面向导演、摄影指导和灯光师的白棚灯光预演工具。
-            <br />
-            摆灯、看镜头、比较方案，把抽象讨论变成同一张画面。
+            <span>灯位、影子和镜头，装进一个实时白棚。</span>
+            <span>开拍前，导演、摄影、灯光先看同一张画面。</span>
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href={demoHref}>
-              直接开始
+              打开白棚
             </a>
             <a className="text-link" href={githubHref}>
               查看源代码 <span aria-hidden="true">↗</span>
@@ -172,10 +171,14 @@ export function ShowcasePage() {
       <section className="story-section" id="story" aria-labelledby="story-title">
         <div className="section-shell">
           <header className="section-heading" data-reveal>
-            <p className="eyebrow">Visible decisions</p>
-            <h2 id="story-title">灯一动，画面就回答。</h2>
+            <p className="eyebrow">灯位 · 影子 · 镜头</p>
+            <h2 id="story-title">
+              <span className="headline-line">灯往哪走，</span>
+              <span className="headline-line">画面就往哪变。</span>
+            </h2>
             <p>
-              Direct Light 不追求把片场塞进浏览器。它只把最需要提前说清楚的关系——灯、人物、镜头和影子——放在一个实时白棚里。
+              “主光再低一点”说出口，每个人脑子里都可能是不同的画面。Direct Light
+              把它落进白棚：灯怎么动，影子怎么变，镜头里当场见。
             </p>
           </header>
 
@@ -222,15 +225,18 @@ export function ShowcasePage() {
       <section className="toolkit-section" id="toolkit" aria-labelledby="toolkit-title">
         <div className="section-shell">
           <header className="section-heading section-heading-light" data-reveal>
-            <p className="eyebrow">One focused workspace</p>
-            <h2 id="toolkit-title">不是重型渲染器。是把话说清楚的工作台。</h2>
+            <p className="eyebrow">控制在手上 · 结果在画面里</p>
+            <h2 id="toolkit-title">
+              <span className="headline-line">参数可以很多，</span>
+              <span className="headline-line">最后只看画面。</span>
+            </h2>
           </header>
 
           <div className="bento-grid">
             <article className="bento-card bento-card-wide" data-reveal>
               <div className="bento-copy">
-                <p>Color &amp; modifiers</p>
-                <h3>把光的颜色、方向和软硬放到同一张图里。</h3>
+                <p>颜色与控光</p>
+                <h3>颜色、方向、软硬，一张图里看完。</h3>
               </div>
               <img src={colorShotUrl} alt="彩色光与控光附件在白棚中的效果" />
             </article>
@@ -238,13 +244,13 @@ export function ShowcasePage() {
             <article className="bento-card bento-card-number" data-reveal>
               <span>最多</span>
               <strong>6</strong>
-              <h3>盏灯，同时保持实时反馈。</h3>
-              <p>硬光、柔光、面光与灯具预设都可以继续手动微调。</p>
+              <h3>盏灯，够把一场戏的关系摆开。</h3>
+              <p>硬光、柔光、面光和灯具预设，套上以后都还能继续调。</p>
             </article>
 
             <article className="bento-card bento-card-views" data-reveal>
-              <p>Four views</p>
-              <h3>自由、镜头、俯视、侧视。</h3>
+              <p>四种视角</p>
+              <h3>换个视角，不用重搭一遍。</h3>
               <div className="view-orbit" aria-hidden="true">
                 <span>镜头</span>
                 <i />
@@ -258,8 +264,8 @@ export function ShowcasePage() {
 
             <article className="bento-card bento-card-compare" data-reveal>
               <div className="bento-copy">
-                <p>Freeze the decision</p>
-                <h3>冻结 A/B，再讨论差异。</h3>
+                <p>冻结比较</p>
+                <h3>A/B 冻结，差异不用靠记忆。</h3>
               </div>
               <div className="compare-images">
                 <figure>
@@ -279,8 +285,11 @@ export function ShowcasePage() {
       <section className="workflow-section" id="workflow" aria-labelledby="workflow-title">
         <div className="section-shell">
           <header className="workflow-heading" data-reveal>
-            <p className="eyebrow">From thought to frame</p>
-            <h2 id="workflow-title">三步，把想法带到片场。</h2>
+            <p className="eyebrow">从白棚到片场</p>
+            <h2 id="workflow-title">
+              <span className="headline-line">摆灯。取景。</span>
+              <span className="headline-line">带走。</span>
+            </h2>
           </header>
           <div className="workflow-grid">
             {workflow.map((step) => (
@@ -294,8 +303,8 @@ export function ShowcasePage() {
           <div className="workflow-preview" data-reveal>
             <img src={lensShotUrl} alt="Direct Light 镜头视角下的白棚布光方案" />
             <div>
-              <span>浏览器打开，即刻使用</span>
-              <strong>纯前端。无需账户。没有等待。</strong>
+              <span>打开浏览器，就进棚。</span>
+              <strong>纯前端。免注册。没有等待。</strong>
             </div>
           </div>
         </div>
@@ -305,8 +314,11 @@ export function ShowcasePage() {
         <div className="final-glow" aria-hidden="true" />
         <div data-reveal>
           <p className="eyebrow">Direct Light</p>
-          <h2 id="final-title">下一次开机前，先把光摆出来。</h2>
-          <p>在线版免安装。macOS 桌面版可下载。项目完全开源。</p>
+          <h2 id="final-title">
+            <span className="headline-line">下一场戏，</span>
+            <span className="headline-line">先从光开始。</span>
+          </h2>
+          <p>在线打开，或者下载 macOS 版。项目完全开源。</p>
           <div className="final-actions">
             <a className="button button-primary" href={demoHref}>
               进入在线版
@@ -323,7 +335,7 @@ export function ShowcasePage() {
           <span className="brand-mark" aria-hidden="true" />
           <span>Direct Light</span>
         </a>
-        <p>为导演、摄影指导与灯光师做的白棚灯光预演工具。</p>
+        <p>把灯位、影子和镜头放进同一个白棚。</p>
         <nav aria-label="Footer links">
           <a href={githubHref}>GitHub</a>
           <a href={supportHref}>Discussions</a>

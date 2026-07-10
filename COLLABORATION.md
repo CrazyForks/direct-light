@@ -24,6 +24,7 @@ Released baseline: `v1.0.3`.
 
 - Changed: rebuilt the isolated `/showcase/` page around a Direct Light-specific product story — one restrained navigation bar, a dark studio hero, real product video, interactive lighting/shadow/lens chapters, capability cards, and a clearer three-step workflow.
 - Changed: added viewport-aware type and spacing, responsive mobile layouts, visible focus states, reduced-motion handling, transform/opacity-only reveal motion, and an interactive screenshot switcher with correct pressed state.
+- Changed: tightened the showcase copy around concrete Direct Light actions (摆灯、看影、进镜头、冻结 A/B), replaced long generic headlines with controlled two-line Chinese display copy, and rebalanced headline sizes, line widths, and mobile wrapping.
 - Changed: updated showcase title, description, theme color, and repository-relative favicon path; refreshed current agent guidance and this unreleased record to match the new direction.
 - Not changed: the live app under `src/`, product/runtime behavior, rendering values, existing media assets, package dependencies, build/deploy configuration, released version `v1.0.3`, tags, or public URLs.
 - Acceptance: deterministic checks and desktop/mobile browser QA are complete; final product/visual taste remains with the user.
