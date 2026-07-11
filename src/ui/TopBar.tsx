@@ -31,7 +31,7 @@ export function TopBar() {
         <span className="grid h-7 w-7 place-items-center rounded-lg bg-violet-500/20 text-violet-200">◐</span>
         <div className="hidden leading-tight lg:block">
           <div className="text-sm font-semibold text-zinc-100">Direct Light</div>
-          <div className="text-[10px] text-zinc-500">{t('topBar.subtitle')} · v1.0.4</div>
+          <div className="text-[10px] text-zinc-500">{t('topBar.subtitle')} · v1.0.5</div>
         </div>
       </div>
 

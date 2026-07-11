@@ -39,18 +39,18 @@ const en: Record<Key, string> = {
 
 const ja: Record<Key, string> = {
   'presetBar.namePlaceholder': 'プリセット名…',
-  'presetBar.save': 'プリセット保存',
-  'presetBar.empty': '保存済みプリセットはありません。ライティングを決めて「プリセット保存」を押してください。',
+  'presetBar.save': 'プリセットを保存',
+  'presetBar.empty': 'まだプリセットはありません。ライトを調整したら、「プリセットを保存」を押してください。',
   'presetBar.noPreview': 'プレビューなし',
-  'presetBar.load': 'クリックで読み込み',
+  'presetBar.load': 'クリックして読み込む',
   'presetBar.duplicate': 'プリセットを複製',
   'presetBar.delete': 'プリセットを削除',
   'presetBar.saved': 'このブラウザにプリセットを保存しました。',
-  'presetBar.saveFailed': '保存できませんでした。ブラウザの保存領域が不足または使用不可です。プリセットは追加されていません。',
+  'presetBar.saveFailed': '保存できませんでした。ブラウザの保存容量が不足しているか、ストレージを利用できません。プリセットは追加されていません。',
   'presetBar.duplicated': 'プリセットのコピーを保存しました。',
-  'presetBar.duplicateFailed': '複製できませんでした。ブラウザの保存領域が不足または使用不可です。',
+  'presetBar.duplicateFailed': '複製できませんでした。ブラウザの保存容量が不足しているか、ストレージを利用できません。',
   'presetBar.deleted': 'プリセットを削除しました。',
-  'presetBar.deleteFailed': '削除できませんでした。ブラウザの保存領域が使用不可のため、元のプリセットを保持しました。',
+  'presetBar.deleteFailed': '削除できませんでした。ブラウザのストレージを利用できないため、元のプリセットはそのまま残っています。',
 }
 
 export const presetBar: Record<AppLanguage, Record<Key, string>> = { 'zh-CN': zh, en, ja }

@@ -48,23 +48,23 @@ const en: Record<Key, string> = {
 
 const ja: Record<Key, string> = {
   'studioPanel.title': '白ホリスタジオ',
-  'studioPanel.subtitle': '空間と反射',
+  'studioPanel.subtitle': '広さと反射',
   'studioPanel.section.size': 'サイズ',
   'studioPanel.width': '幅',
-  'studioPanel.depth': '奥行',
+  'studioPanel.depth': '奥行き',
   'studioPanel.height': '高さ',
   'studioPanel.section.reflect': '反射 / 環境',
-  'studioPanel.wallReflectance': '壁面反射',
-  'studioPanel.floorReflectance': '床面反射',
-  'studioPanel.ambientLevel': '環境ベース輝度',
+  'studioPanel.wallReflectance': '壁の反射率',
+  'studioPanel.floorReflectance': '床の反射率',
+  'studioPanel.ambientLevel': '環境光の明るさ',
   'studioPanel.section.rendering': 'レンダリング',
-  'studioPanel.softShadows': 'ソフトシャドウ（PCF、リング無し）',
+  'studioPanel.softShadows': '柔らかい影（PCF、リンギングなし）',
   'studioPanel.section.structure': '構造',
-  'studioPanel.cyclorama': 'シームレスホリゾント',
-  'studioPanel.sideWalls': '側壁',
+  'studioPanel.cyclorama': '白ホリ（曲面背景）',
+  'studioPanel.sideWalls': '左右の壁',
   'studioPanel.ceiling': '天井',
-  'studioPanel.wallColor': '壁面色',
-  'studioPanel.floorColor': '床面色',
+  'studioPanel.wallColor': '壁の色',
+  'studioPanel.floorColor': '床の色',
 }
 
 export const studioPanel: Record<AppLanguage, Record<Key, string>> = { 'zh-CN': zh, en, ja }

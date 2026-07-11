@@ -39,11 +39,11 @@ const ja: Record<Key, string> = {
   'view.side': 'サイド',
   'view.compare': '比較',
 
-  'view.hint.camera': 'カメラプレビュー · 構図確認（カメラ固定）',
-  'view.hint.free': 'フリービュー · ドラッグで回転 / ホイールでズーム / ライトをドラッグで移動',
-  'view.hint.top': 'トップビュー配置図 · 人物・ライト・カメラの関係',
-  'view.hint.side': 'サイドビュー · 高さとあおりの関係',
-  'view.hint.compare': 'A/B比較 · 左A 編集中 / 右B 固定参照',
+  'view.hint.camera': 'カメラプレビュー · カメラを固定して構図を確認',
+  'view.hint.free': 'フリービュー · ドラッグで回転 / ホイールでズーム / ライトをドラッグして移動',
+  'view.hint.top': 'トップビュー · 人物、ライト、カメラの配置を確認',
+  'view.hint.side': 'サイドビュー · 高さと角度の関係を確認',
+  'view.hint.compare': 'A/B比較 · 左のAを編集 / 右のBを固定して比較',
 }
 
 export const views: Record<AppLanguage, Record<Key, string>> = { 'zh-CN': zh, en, ja }

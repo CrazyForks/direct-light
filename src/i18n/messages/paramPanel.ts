@@ -17,7 +17,7 @@ const en: Record<Key, string> = {
 }
 
 const ja: Record<Key, string> = {
-  'paramPanel.empty.line1': 'リストまたはシーンからオブジェクトを選択',
+  'paramPanel.empty.line1': 'リストまたはシーンから編集する対象を選んでください',
   'paramPanel.empty.line2': '（人物 / ライト / カメラ / スタジオ）',
 }
 

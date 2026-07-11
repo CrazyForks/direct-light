@@ -4,7 +4,7 @@ This file is the short current roadmap. Completed historical planning lives in [
 
 ## Current Baseline
 
-Released baseline: `v1.0.4`.
+Released baseline: `v1.0.5`.
 
 Completed and released:
 
@@ -13,6 +13,7 @@ Completed and released:
 - v1.0.2 user-customizable `.glb` figure models.
 - v1.0.3 shadow light-bleeding fix.
 - v1.0.4 onboarding, accessibility, A/B correctness, persistence reliability, custom fixture / GLB compatibility, and production code splitting.
+- v1.0.5 Japanese copy humanization with no architecture, schema, or rendering changes.
 - GitHub Pages app root and `/showcase/` project page.
 - macOS desktop packaging through Tauri CI.
 
@@ -60,5 +61,7 @@ Changed in the 2026-06-29 cleanup: this root roadmap was shortened to current st
 Changed on 2026-07-10: candidate work now links to public feedback and contribution entry points, while remaining explicitly uncommitted until scoped.
 
 Changed on 2026-07-10: moved the onboarding / accessibility / A-B correctness line into released `v1.0.4`, together with persistence, fixture / GLB, performance, and code-splitting fixes; full mobile layout remains a candidate rather than being implied complete by the narrow-screen notice.
+
+Changed on 2026-07-11: moved the Japanese copy humanization pass into released `v1.0.5`; product priorities and next-candidate scope remain unchanged.
 
 Not changed by the roadmap update: product priorities, release workflow, rendering goals, or public URLs.

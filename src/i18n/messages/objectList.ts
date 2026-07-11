@@ -63,7 +63,7 @@ const en: Record<Key, string> = {
 
 const ja: Record<Key, string> = {
   'objectList.studio.title': 'スタジオ',
-  'objectList.studio.row': '白ホリゾント',
+  'objectList.studio.row': '白ホリスタジオ',
 
   'objectList.people.title': '人物',
   'objectList.people.add': '人物を追加',
@@ -80,9 +80,9 @@ const ja: Record<Key, string> = {
   'objectList.camera.title': 'カメラ',
   'objectList.camera.row': 'メインカメラ',
 
-  'objectList.objects.title': '小道具 / 構造',
+  'objectList.objects.title': '小道具',
   'objectList.objects.addPlaceholder': '＋ 追加',
-  'objectList.objects.groupGear': 'ライトコントロール機材',
+  'objectList.objects.groupGear': '照明補助機材',
   'objectList.objects.show': '表示',
   'objectList.objects.hide': '非表示',
   'objectList.objects.duplicate': '複製',

@@ -6,9 +6,9 @@ Archive map: [`docs/history/README.md`](docs/history/README.md). Read archived m
 
 ## Current State
 
-Date: 2026-07-10
+Date: 2026-07-11
 
-Released baseline: `v1.0.4`.
+Released baseline: `v1.0.5`.
 
 - GitHub: https://github.com/oukeming64-tech/direct-light
 - Live app/demo: https://oukeming64-tech.github.io/direct-light/
@@ -19,6 +19,15 @@ Released baseline: `v1.0.4`.
 - `src-tauri/Cargo.lock` is committed. Refresh it with `.github/workflows/lockfile.yml` when needed; do not re-add inline `time` pins or ad hoc `cargo generate-lockfile` steps to release CI.
 
 ## Latest Release Work and Documentation
+
+2026-07-11 (`v1.0.5` — Japanese copy humanization):
+
+- Release headline: `野獣博士先輩の協力のもと、日本語の読みやすさを改善しました。`
+- Changed: rewrote the existing Japanese UI copy across onboarding, lighting, people, camera, studio, presets, A/B comparison, and built-in display labels to remove literal Chinese phrasing, incomplete particles, engineering-heavy wording, and non-native photography terminology.
+- Changed: shortened Japanese labels that visibly wrapped in fixed controls, while retaining full fixture names and leaving user-authored / model / brand names untouched.
+- Changed: advanced Web, npm, Tauri, Cargo, and current documentation metadata from `1.0.4` to `1.0.5` for the release.
+- Not changed: localization keys or module structure, typed dictionary architecture, component architecture, state actions, scene / preset / A/B / custom-fixture schemas, rendering behavior and values, Simplified Chinese / English copy, dependencies, public URLs, or showcase code.
+- Acceptance: lint, production build, diff check, and 1280x820 browser QA for Japanese onboarding, light, person, and A/B comparison views passed. Final native-language taste remains open to user / native-speaker feedback.
 
 2026-07-10 (`v1.0.4` — onboarding + usability / reliability hardening):
 
@@ -67,6 +76,7 @@ Released baseline: `v1.0.4`.
 - `v1.0.2`: user-customizable `.glb` figure models via `src/data/personModels.ts` and `src/scene/PersonGLB.tsx`; dummy remains the default, imported figures lazy-load on selection.
 - `v1.0.3`: shadow light-bleeding fix; per-light `normalBias` plus global `studio.shadowMode` (`variance` / `soft`). `ShadowModeSync` only forces material recompilation; do not re-add direct `gl.shadowMap.type` mutation.
 - `v1.0.4`: five-step multilingual onboarding, narrow-screen guidance, keyboard/ARIA hardening, complete A/B category detection, persistence failure feedback, custom tube / skeleton-safe GLB fixes, passive-compare and shadow-map performance fixes, and Vite/Rolldown code splitting.
+- `v1.0.5`: Japanese copy humanization across onboarding, parameter panels, presets, A/B comparison, and built-in display labels; no schema, rendering, or architecture changes.
 
 `LIGHT_TYPE_LABELS` and `LIGHT_TARGET_MODE_LABELS` are unused but intentionally retained until a later Codex-approved cleanup.
 

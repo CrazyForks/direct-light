@@ -28,7 +28,7 @@ const en: Record<Key, string> = {
 }
 
 const ja: Record<Key, string> = {
-  'common.full': '上限 {max}',
+  'common.full': '上限：{max}',
   'language.label': '言語',
   'common.axisX': '左右 X',
   'common.axisYoffGround': '地上高 Y',

@@ -24,11 +24,11 @@ const en: Record<Key, string> = {
 }
 
 const ja: Record<Key, string> = {
-  'topBar.subtitle': '白ホリ ライティングプレビュー',
-  'topBar.exportImage': '画像を書き出し',
+  'topBar.subtitle': '白ホリ用ライティングプレビュー',
+  'topBar.exportImage': '画像を書き出す',
   'topBar.reset': 'リセット',
   'topBar.resetTitle': 'デフォルトシーンに戻す',
-  'topBar.quickLooks': 'クイック照明例',
+  'topBar.quickLooks': 'ライティング例',
 }
 
 export const topBar: Record<AppLanguage, Record<Key, string>> = { 'zh-CN': zh, en, ja }

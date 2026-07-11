@@ -46,7 +46,7 @@ const en: Record<Key, string> = {
 }
 
 const ja: Record<Key, string> = {
-  'objectPanel.subtitle': '小道具 / 構造パラメータ',
+  'objectPanel.subtitle': '小道具 / セットの設定',
   'objectPanel.section.basic': '基本',
   'objectPanel.name': '名称',
   'objectPanel.kind': 'タイプ',
@@ -54,15 +54,15 @@ const ja: Record<Key, string> = {
   'objectPanel.section.transform': '位置 / 向き',
   'objectPanel.section.size': 'サイズ',
   'objectPanel.width': '幅',
-  'objectPanel.depth': '奥行',
+  'objectPanel.depth': '奥行き',
   'objectPanel.height': '高さ',
   'objectPanel.section.appearance': '外観',
   'objectPanel.material': 'マテリアル',
   'objectPanel.color': '色',
-  'objectPanel.section.shadow': 'シャドウ',
+  'objectPanel.section.shadow': '影',
   'objectPanel.castShadow': '影を落とす',
   'objectPanel.receiveShadow': '影を受ける',
-  'objectPanel.showLabel': '俯瞰ラベル',
+  'objectPanel.showLabel': 'トップビューにラベルを表示',
 }
 
 export const objectPanel: Record<AppLanguage, Record<Key, string>> = { 'zh-CN': zh, en, ja }

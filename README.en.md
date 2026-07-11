@@ -24,13 +24,14 @@ A frontend-only web app, no backend. It optimizes for **communication, real-time
 
 ## Status
 
-Current public version: **`v1.0.4`**. The white-studio lighting-previz core is feature-complete, with full runtime localization in 简体中文 / English / 日本語.
+Current public version: **`v1.0.5`**. The white-studio lighting-previz core is feature-complete, with full runtime localization in 简体中文 / English / 日本語.
 
 - `v1.0.0`: first stable major release; multilingual UI.
 - `v1.0.1`: free-drag clamped to the studio footprint.
 - `v1.0.2`: user-customizable `.glb` figure models.
 - `v1.0.3`: shadow light-bleeding fix (per-light "normal bias" slider + a "soft shadows (PCF)" toggle).
 - `v1.0.4`: five-step onboarding, keyboard/screen-reader workflow, A/B correctness, persistence failure feedback, fixture/figure compatibility, and production code splitting.
+- `v1.0.5`: natural, readable Japanese UI copy with no architecture, scene-data, or rendering changes.
 
 Full per-version history in [`CHANGELOG.md`](CHANGELOG.md).
 

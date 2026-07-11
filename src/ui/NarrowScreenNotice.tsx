@@ -11,7 +11,7 @@ export function NarrowScreenNotice() {
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-violet-500/20 text-violet-200">◐</span>
             <div>
               <div className="text-sm font-semibold text-white">Direct Light</div>
-              <div className="text-[10px] text-zinc-500">v1.0.4</div>
+              <div className="text-[10px] text-zinc-500">v1.0.5</div>
             </div>
           </div>
           <LanguageMenu />
