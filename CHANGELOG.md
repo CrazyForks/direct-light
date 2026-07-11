@@ -4,8 +4,6 @@
 
 格式参考 [Keep a Changelog](https://keepachangelog.com/)，版本号为产品内部迭代号（非 npm 语义化版本）。
 
-## [Unreleased]
-
 ## [1.0.5] - 2026-07-11 · 日本語の読みやすさを改善
 
 > Codex の静的チェック、プロダクションビルド、1280×820 のブラウザ確認を完了。TopBar / `package.json` / `package-lock.json` / Tauri / Cargo / Cargo.lock はすべて `1.0.5`、タグは `v1.0.5`。

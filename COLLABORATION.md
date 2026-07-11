@@ -26,6 +26,7 @@ Released baseline: `v1.0.5`.
 - Changed: rewrote the existing Japanese UI copy across onboarding, lighting, people, camera, studio, presets, A/B comparison, and built-in display labels to remove literal Chinese phrasing, incomplete particles, engineering-heavy wording, and non-native photography terminology.
 - Changed: shortened Japanese labels that visibly wrapped in fixed controls, while retaining full fixture names and leaving user-authored / model / brand names untouched.
 - Changed: advanced Web, npm, Tauri, Cargo, and current documentation metadata from `1.0.4` to `1.0.5` for the release.
+- Documentation correction after publication: removed the empty `[Unreleased]` placeholder above `1.0.5` so the changelog opens directly on the current public release; release contents and artifacts did not change.
 - Not changed: localization keys or module structure, typed dictionary architecture, component architecture, state actions, scene / preset / A/B / custom-fixture schemas, rendering behavior and values, Simplified Chinese / English copy, dependencies, public URLs, or showcase code.
 - Acceptance: lint, production build, diff check, and 1280x820 browser QA for Japanese onboarding, light, person, and A/B comparison views passed. Final native-language taste remains open to user / native-speaker feedback.
 
